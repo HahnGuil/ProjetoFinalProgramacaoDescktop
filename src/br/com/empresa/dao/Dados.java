@@ -27,18 +27,18 @@ public class Dados {
 		usuarioVOs = new ArrayList<UsuarioVO>();
 		UsuarioVO u1 = new UsuarioVO();
 		u1.setId(new BigInteger("1"));
-		u1.setLogusu("pedro");
-		u1.setSenusu("123456");
+		u1.setLogusu("postgres");
+		u1.setSenusu("hahn");
 		
 		UsuarioVO u2 = new UsuarioVO();
 		u2.setId(new BigInteger("2"));
-		u2.setLogusu("joao");
-		u2.setSenusu("123456");
+		u2.setLogusu("postgres");
+		u2.setSenusu("hahn");
 		
 		UsuarioVO u3 = new UsuarioVO();
 		u3.setId(new BigInteger("3"));
-		u3.setLogusu("ana");
-		u3.setSenusu("123456");
+		u3.setLogusu("postgres");
+		u3.setSenusu("hahn");
 		
 		usuarioVOs.add(u1);
 		usuarioVOs.add(u2);
@@ -103,13 +103,13 @@ public class Dados {
 		
 	}
 
-	public static List<UsuarioVO> getUsuarioVOs() {
-		return usuarioVOs;
-	}
+//	public static List<UsuarioVO> getUsuarioVOs() {
+//		return usuarioVOs;
+//	}
 
-	public static void setUsuarioVOs(List<UsuarioVO> usuarioVOs) {
-		Dados.usuarioVOs = usuarioVOs;
-	}
+//	public static void setUsuarioVOs(List<UsuarioVO> usuarioVOs) {
+//		Dados.usuarioVOs = usuarioVOs;
+//	}
 
 	public static UsuarioVO getUsuarioSelecionado() {
 		return usuarioSelecionado;
@@ -127,38 +127,38 @@ public class Dados {
 		Dados.clienteSelecionado = clienteSelecionado;
 	}
 
-	public static List<ClienteVO> getClienteVOs() {
-		return clienteVOs;
-	}
+//	public static List<ClienteVO> getClienteVOs() {
+//		return clienteVOs;
+//	}
 
-	public static void setClienteVOs(List<ClienteVO> clienteVOs) {
-		Dados.clienteVOs = clienteVOs;
-	}
+//	public static void setClienteVOs(List<ClienteVO> clienteVOs) {
+//		Dados.clienteVOs = clienteVOs;
+//	}
 
-	public static List<UsuarioClienteVO> getUsuarioClienteVOs() {
-		return usuarioClienteVOs;
-	}
+//	public static List<UsuarioClienteVO> getUsuarioClienteVOs() {
+//		return usuarioClienteVOs;
+//	}
 
-	public static void setUsuarioClienteVOs(List<UsuarioClienteVO> usuarioClienteVOs) {
-		Dados.usuarioClienteVOs = usuarioClienteVOs;
-	}
+//	public static void setUsuarioClienteVOs(List<UsuarioClienteVO> usuarioClienteVOs) {
+//		Dados.usuarioClienteVOs = usuarioClienteVOs;
+//	}
 
-	public static List<PessoaVO> getPessoaVOs() {
-		return pessoaVOs;
-	}
+//	public static List<PessoaVO> getPessoaVOs() {
+//		return pessoaVOs;
+//	}
 
-	public static void setPessoaVOs(List<PessoaVO> pessoaVOs) {
-		Dados.pessoaVOs = pessoaVOs;
-	}
+//	public static void setPessoaVOs(List<PessoaVO> pessoaVOs) {
+//		Dados.pessoaVOs = pessoaVOs;
+//	}
 
-	public static List<ProdutoVO> getProdutoVOs() {
-		return produtoVOs;
-	}
+//	public static List<ProdutoVO> getProdutoVOs() {
+//		return produtoVOs;
+//	}
 
-	public static void setProdutoVOs(List<ProdutoVO> produtoVOs) {
-		Dados.produtoVOs = produtoVOs;
-	}
-	
+//	public static void setProdutoVOs(List<ProdutoVO> produtoVOs) {
+//		Dados.produtoVOs = produtoVOs;
+//	}
+//	
 	
 
 }

@@ -5,16 +5,19 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,6 +30,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.TableColumnModel;
 
 import br.com.empresa.dao.Dados;
+import br.com.empresa.dao.HibernateUtil;
 import br.com.empresa.exception.BOException;
 import br.com.empresa.exception.BOValidationException;
 import br.com.empresa.service.IServicoBeanLocal;
@@ -92,7 +96,7 @@ public class ConsultaProdutoView extends JDialog {
 
 		cbStatus = new JComboBox();
 		DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel<>(StatusEnum.values());
-		cbStatus.setModel(defaultComboBoxModel);		
+		cbStatus.setModel(defaultComboBoxModel);
 		defaultComboBoxModel.insertElementAt(null, 0);
 		cbStatus.setSelectedIndex(0);
 		cbStatus.setBounds(78, 43, 116, 24);
@@ -188,9 +192,63 @@ public class ConsultaProdutoView extends JDialog {
 		tableColumnModel.getColumn(5).setPreferredWidth(80);
 
 		scrollPane.setViewportView(table);
+
+		JButton btnImportarCSV = new JButton("Importar CSV");
+		btnImportarCSV.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				EntityManager em = HibernateUtil.getEntityManager();
+				
+				File arquivoOrigem = null;
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				int opcao = fileChooser.showDialog(fileChooser, null);
+				
+				if(opcao == JFileChooser.APPROVE_OPTION) {
+					
+					arquivoOrigem = fileChooser.getSelectedFile();
+					
+					System.out.println(arquivoOrigem.getAbsolutePath());
+					System.out.println(arquivoOrigem.getName());
+					
+					lerPastaDoArquivo(arquivoOrigem);
+				}else {
+					JOptionPane.showMessageDialog(null, "Não pode seguir");
+				}
+			}
+
+			private void lerPastaDoArquivo(File arquivoOrigem) {
+				File[]	listagem = arquivoOrigem.listFiles();
+				
+				for(File file : listagem) {
+					System.out.println(file.getAbsolutePath());
+					if(file.isDirectory()) {
+						System.out.println("Arquivo");
+					}else {
+						System.out.println("Arquivo");
+						
+						//FALTA FAZER A INSERÇÃO
+					}
+				}
+				
+			}
+
+		});
+		btnImportarCSV.setBounds(12, 370, 140, 23);
+		getContentPane().add(btnImportarCSV);
+
+		JButton btnExportarCSV = new JButton("Exportar CSV");
+		btnExportarCSV.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//Vai ser preciso pegar o resultado do SQL que aparece na listagem de produtos na tabela 
+			}
+		});
+		btnExportarCSV.setBounds(162, 370, 133, 23);
+		getContentPane().add(btnExportarCSV);
 		pesquisar();
 
-		//Coloca a tela no centro da janela.
+		// Coloca a tela no centro da janela.
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
@@ -204,7 +262,8 @@ public class ConsultaProdutoView extends JDialog {
 	private void editarRegistro() {
 
 		if (table.getSelectedRow() < 0) {
-			JOptionPane.showMessageDialog(this, "É necessário selecionar um registro!", "Mensagem de aviso", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, "É necessário selecionar um registro!", "Mensagem de aviso",
+					JOptionPane.WARNING_MESSAGE);
 		} else {
 
 			try {
@@ -215,7 +274,8 @@ public class ConsultaProdutoView extends JDialog {
 				produtoView.setVisible(true);
 
 			} catch (BOException e) {
-				JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar a operação.", "Erro", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar a operação.", "Erro",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
@@ -224,11 +284,13 @@ public class ConsultaProdutoView extends JDialog {
 	private void excluirRegistro() {
 
 		if (table.getSelectedRow() < 0) {
-			JOptionPane.showMessageDialog(this, "É necessário selecionar um registro!", "Mensagem de aviso", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, "É necessário selecionar um registro!", "Mensagem de aviso",
+					JOptionPane.WARNING_MESSAGE);
 		} else {
 
 			Object[] options = { "Sim!", "Não" };
-			int n = JOptionPane.showOptionDialog(null, "Deseja realmente excluir o registro?", "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+			int n = JOptionPane.showOptionDialog(null, "Deseja realmente excluir o registro?", "Confirmação",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
 			if (n == 0) {
 
@@ -237,7 +299,8 @@ public class ConsultaProdutoView extends JDialog {
 					servicoBeanLocal.excluirProduto(produto);
 					pesquisar();
 				} catch (BOException e) {
-					JOptionPane.showMessageDialog(this, "Ocorreu um erro ao realizar a operação!", "Mensagem de erro", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Ocorreu um erro ao realizar a operação!", "Mensagem de erro",
+							JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -263,7 +326,7 @@ public class ConsultaProdutoView extends JDialog {
 		try {
 
 			Map<String, Object> filters = new HashMap<>();
-			
+
 			BigInteger id = null;
 			if (this.ftfCodigo.getText() != null && this.ftfCodigo.getText().trim().length() > 0) {
 				id = new BigInteger(ftfCodigo.getText().trim());
@@ -272,21 +335,22 @@ public class ConsultaProdutoView extends JDialog {
 
 			String descri = this.tfDescricao.getText();
 			filters.put("descri", descri);
-			
+
 			String status = null;
 			if (cbStatus.getSelectedItem() != null) {
-				StatusEnum statusEnum = (StatusEnum)this.cbStatus.getSelectedItem();
+				StatusEnum statusEnum = (StatusEnum) this.cbStatus.getSelectedItem();
 				status = statusEnum.name();
 				filters.put("status", status);
 			}
-			
+
 			String codbar = null;
-			if(this.tfCodBarra.getText() != null && this.tfCodBarra.getText().trim().length() > 0) {
+			if (this.tfCodBarra.getText() != null && this.tfCodBarra.getText().trim().length() > 0) {
 				codbar = this.tfCodBarra.getText();
 				filters.put("codbar", codbar);
 			}
 
-			List<ProdutoVO> produtoVOs = servicoBeanLocal.listarProduto(id, descri, status, codbar, Dados.getClienteSelecionado());
+			List<ProdutoVO> produtoVOs = servicoBeanLocal.listarProduto(id, descri, status, codbar,
+					Dados.getClienteSelecionado());
 
 			if (produtoVOs != null) {
 				DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
@@ -321,7 +385,8 @@ public class ConsultaProdutoView extends JDialog {
 		} catch (BOValidationException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Mensagem de aviso", JOptionPane.WARNING_MESSAGE);
 		} catch (BOException e) {
-			JOptionPane.showMessageDialog(this, "Ocorreu um erro ao executar a operação.", "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Ocorreu um erro ao executar a operação.", "Erro",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
