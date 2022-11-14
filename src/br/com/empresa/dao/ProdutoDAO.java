@@ -142,23 +142,34 @@ public class ProdutoDAO implements IProdutoDAO {
 	@Override
 	public void salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
 
-		List<ProdutoVO> produtoVOs = null; // Dados.getProdutoVOs();
+		// List<ProdutoVO> produtoVOs = null; // Dados.getProdutoVOs();
+		EntityManager em = HibernateUtil.getEntityManager();
 
-		if (produtoVO.getId() == null) {
-			if (produtoVOs.size() > 0) {
-				ProdutoVO ultimoProduto = produtoVOs.get(produtoVOs.size() - 1);
-				produtoVO.setId(ultimoProduto.getId().add(BigInteger.ONE));
+		try {
+
+			if (produtoVO.getId() == null) {
+				em.getTransaction().begin();
+				em.persist(produtoVO);
+				em.getTransaction().commit();
 			} else {
-				produtoVO.setId(BigInteger.ONE);
-			}
 
-			// Dados.getProdutoVOs().add(produtoVO);
-		} else {
-			for (int i = 0; i < produtoVOs.size(); i++) {
-				if (produtoVOs.get(i).equals(produtoVO)) {
-					// Dados.getProdutoVOs().set(i, produtoVO);
-				}
+				em.getTransaction().begin();
+				ProdutoVO produtoBanco = em.find(ProdutoVO.class, produtoVO.getId());
+
+				produtoBanco.setDescri(produtoVO.getDescri());
+				produtoBanco.setCodbar(produtoVO.getCodbar());
+				produtoBanco.setStatus(produtoVO.getStatus());
+				produtoBanco.setQtdest(produtoVO.getQtdest());
+				produtoBanco.setValcom(produtoVO.getValcom());
+				produtoBanco.setValven(produtoVO.getValven());
+
+				em.merge(produtoBanco);
+				em.getTransaction().commit();
 			}
+		} catch (Exception e) {
+			throw new BOException(e);
+		} finally {
+			em.close();
 		}
 	}
 
