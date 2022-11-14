@@ -165,11 +165,18 @@ public class ProdutoDAO implements IProdutoDAO {
 	@Override
 	public void excluirProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
 
-		// for (int i = 0; i < Dados.getProdutoVOs().size(); i++) {
-		// if (Dados.getProdutoVOs().get(i).equals(produtoVO)) {
-		// Dados.getProdutoVOs().remove(i);
-		// }
-		// }
+		EntityManager em = HibernateUtil.getEntityManager();
+
+		try {
+			em.getTransaction().begin();
+			ProdutoVO produto = em.find(ProdutoVO.class, produtoVO.getId());
+			em.remove(produto);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			throw new BOException(e);
+		} finally {
+			em.close();
+		}
 
 	}
 
