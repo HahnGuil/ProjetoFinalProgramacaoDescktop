@@ -7,10 +7,14 @@
 
 	<persistence-unit name="ProjetoExemploPU">
 		<properties>
-			<property name="javax.persistence.jdbc.url"
+			<!-- <property name="javax.persistence.jdbc.url"
 				value="jdbc:postgresql://localhost:3314/guilherme" />
 			<property name="javax.persistence.jdbc.user" value="postgres" />
-			<property name="javax.persistence.jdbc.password" value="hahn" />
+			<property name="javax.persistence.jdbc.password" value="hahn" /> -->
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:postgresql://localhost:5432/vendas" />
+			<property name="javax.persistence.jdbc.user" value="postgres" />
+			<property name="javax.persistence.jdbc.password" value="davi123" />
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />

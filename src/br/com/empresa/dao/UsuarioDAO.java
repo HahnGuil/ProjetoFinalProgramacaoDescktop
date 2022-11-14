@@ -1,5 +1,6 @@
 package br.com.empresa.dao;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import br.com.empresa.exception.BOException;
@@ -9,12 +10,12 @@ import br.com.empresa.vo.UsuarioVO;
 public class UsuarioDAO implements IUsuarioDAO {
 
 	public UsuarioDAO() {
-		
+
 	}
 
 	@Override
 	public UsuarioVO buscarUsuario(String login, String senha) throws BOValidationException, BOException {
-		
+
 		List<UsuarioVO> usuarioVOs = Dados.getUsuarioVOs();
 
 		boolean encontrado = false;
@@ -24,7 +25,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 				return usuarioVO;
 			}
 		}
-		
+
 		return null;
 	}
 

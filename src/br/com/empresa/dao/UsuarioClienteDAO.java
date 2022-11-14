@@ -20,9 +20,12 @@ public class UsuarioClienteDAO implements IUsuarioClienteDAO {
 
 		List<UsuarioClienteVO> filtro = new ArrayList<UsuarioClienteVO>();
 
-		for (UsuarioClienteVO usuarioClienteVO : usuarioClienteVOs) {
-			if (usuarioClienteVO.getUsuarioVO().equals(usuarioVO)) {
-				filtro.add(usuarioClienteVO);
+		if (usuarioClienteVOs != null) {
+
+			for (UsuarioClienteVO usuarioClienteVO : usuarioClienteVOs) {
+				if (usuarioClienteVO.getUsuarioVO().equals(usuarioVO)) {
+					filtro.add(usuarioClienteVO);
+				}
 			}
 		}
 
@@ -36,9 +39,11 @@ public class UsuarioClienteDAO implements IUsuarioClienteDAO {
 
 		List<UsuarioClienteVO> usuarioClienteVOs = Dados.getUsuarioClienteVOs();
 
-		for (UsuarioClienteVO usuarioClienteVO : usuarioClienteVOs) {
-			if (usuarioClienteVO.getUsuarioVO().equals(usuarioVO)) {
-				qtd++;
+		if (usuarioClienteVOs != null) {
+			for (UsuarioClienteVO usuarioClienteVO : usuarioClienteVOs) {
+				if (usuarioClienteVO.getUsuarioVO().equals(usuarioVO)) {
+					qtd++;
+				}
 			}
 		}
 		return qtd;

@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import br.com.empresa.exception.BOException;
 import br.com.empresa.exception.BOValidationException;
@@ -19,64 +24,79 @@ public class ProdutoDAO implements IProdutoDAO {
 	}
 
 	@Override
-
 	public ProdutoVO buscarProdutoPorId(ProdutoVO produtoVO) throws BOException {
 
-		List<ProdutoVO> produtoVOs = Dados.getProdutoVOs();
+		// LISTAR POR ID
+		EntityManager em = HibernateUtil.getEntityManager();
 
-		for (ProdutoVO p : produtoVOs) {
+		ProdutoVO produto = em.find(ProdutoVO.class, produtoVO.getId());
 
-			if (produtoVO.equals(p)) {
-				return p;
-			}
-		}
+		em.close();
 
-		return null;
+		return produto;
+
+		// List<ProdutoVO> produtoVOs = Dados.getProdutoVOs();
+
+		// for (ProdutoVO p : produtoVOs) {
+
+		// if (produtoVO.equals(p)) {
+		// return p;
+		// }
+		// }
 	}
 
 	@Override
 	public List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar, ClienteVO client)
 			throws BOException {
 
-		// TODO implementar de forma correta posteriormente.
+		EntityManager em = HibernateUtil.getEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		List<ProdutoVO> produtoVOs = Dados.getProdutoVOs();
-		List<ProdutoVO> retorno = new ArrayList<>();
+		CriteriaQuery<ProdutoVO> criteria = cb.createQuery(ProdutoVO.class);
 
-		for (ProdutoVO produto : produtoVOs) {
+		// From
+		Root<ProdutoVO> produtoFrom = criteria.from(ProdutoVO.class);
 
-			if (produto.getClient().equals(client) == false) {
-				continue;
-			}
+		// Where
+		Predicate produtoWhere = cb.equal(produtoFrom.get("client"), client);
 
-			if (id != null) {
-				if (produto.getId().equals(id) == false) {
-					continue;
-				}
-			}
-
-			if (descri != null && descri.trim().length() > 0) {
-				if (produto.getDescri().contains(descri) == false) {
-					continue;
-				}
-			}
-
-			if (status != null) {
-				if (produto.getStatus().equals(status) == false) {
-					continue;
-				}
-			}
-
-			if (codbar != null && codbar.trim().length() > 0) {
-				if (produto.getCodbar().contains(codbar) == false) {
-					continue;
-				}
-			}
-
-			retorno.add(produto);
+		// Filtro por ID
+		if (id != null) {
+			produtoWhere = cb.and(produtoWhere, cb.equal(produtoFrom.get("id"), id));
 		}
 
-		return retorno;
+		// Filtro por descrição
+		if (descri != null && descri.trim().length() > 0) {
+			produtoWhere = cb.and(produtoWhere,
+					cb.like(
+							cb.lower(produtoFrom.get("descri")),
+							"%" + descri.toLowerCase() + "%"));
+		}
+
+		// Filtro por status
+		if (status != null) {
+			produtoWhere = cb.and(produtoWhere, cb.equal(produtoFrom.get("status"), status));
+		}
+
+		// Filtro por codigo de barras
+		if (codbar != null && codbar.trim().length() > 0) {
+			produtoWhere = cb.and(produtoWhere,
+					cb.like(
+							cb.lower(produtoFrom.get("codbar")),
+							"%" + codbar.toLowerCase() + "%"));
+		}
+
+		criteria.where(produtoWhere);
+
+		TypedQuery<ProdutoVO> query = em.createQuery(criteria);
+
+		query.setMaxResults(25);
+
+		List<ProdutoVO> retornoProdutos = query.getResultList();
+
+		em.close();
+
+		return retornoProdutos;
 	}
 
 	@Override
@@ -85,11 +105,11 @@ public class ProdutoDAO implements IProdutoDAO {
 
 		// TODO implementar de forma correta posteriormente.
 
-		List<ProdutoVO> produtoVOs = Dados.getProdutoVOs();
+		// List<ProdutoVO> produtoVOs = Dados.getProdutoVOs();
 
-		if (produtoVOs != null) {
-			return produtoVOs.size();
-		}
+		// if (produtoVOs != null) {
+		// return produtoVOs.size();
+		// }
 
 		return 0;
 	}
@@ -100,7 +120,7 @@ public class ProdutoDAO implements IProdutoDAO {
 
 		// TODO implementar de forma correta posteriormente.
 
-		List<ProdutoVO> produtoVOs = Dados.getProdutoVOs();
+		List<ProdutoVO> produtoVOs = null; // Dados.getProdutoVOs();
 
 		return produtoVOs;
 	}
@@ -110,7 +130,7 @@ public class ProdutoDAO implements IProdutoDAO {
 
 		// TODO implementar de forma correta posteriormente.
 
-		List<ProdutoVO> produtoVOs = Dados.getProdutoVOs();
+		List<ProdutoVO> produtoVOs = null; // Dados.getProdutoVOs();
 
 		if (produtoVOs != null) {
 			return produtoVOs.size();
@@ -122,7 +142,7 @@ public class ProdutoDAO implements IProdutoDAO {
 	@Override
 	public void salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
 
-		List<ProdutoVO> produtoVOs = Dados.getProdutoVOs();
+		List<ProdutoVO> produtoVOs = null; // Dados.getProdutoVOs();
 
 		if (produtoVO.getId() == null) {
 			if (produtoVOs.size() > 0) {
@@ -132,11 +152,11 @@ public class ProdutoDAO implements IProdutoDAO {
 				produtoVO.setId(BigInteger.ONE);
 			}
 
-			Dados.getProdutoVOs().add(produtoVO);
+			// Dados.getProdutoVOs().add(produtoVO);
 		} else {
 			for (int i = 0; i < produtoVOs.size(); i++) {
 				if (produtoVOs.get(i).equals(produtoVO)) {
-					Dados.getProdutoVOs().set(i, produtoVO);
+					// Dados.getProdutoVOs().set(i, produtoVO);
 				}
 			}
 		}
@@ -145,11 +165,11 @@ public class ProdutoDAO implements IProdutoDAO {
 	@Override
 	public void excluirProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
 
-		for (int i = 0; i < Dados.getProdutoVOs().size(); i++) {
-			if (Dados.getProdutoVOs().get(i).equals(produtoVO)) {
-				Dados.getProdutoVOs().remove(i);
-			}
-		}
+		// for (int i = 0; i < Dados.getProdutoVOs().size(); i++) {
+		// if (Dados.getProdutoVOs().get(i).equals(produtoVO)) {
+		// Dados.getProdutoVOs().remove(i);
+		// }
+		// }
 
 	}
 
