@@ -78,6 +78,11 @@ public class ProdutoVO implements Serializable {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private ClienteVO client;
 	
+	//DataFabricacao
+//	@Basic
+//	@Column(name = "dtFabricacao", )
+	
+	
 	public ProdutoVO() {
 	}
 

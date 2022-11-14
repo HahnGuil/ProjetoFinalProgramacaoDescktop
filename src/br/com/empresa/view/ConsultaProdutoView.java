@@ -38,6 +38,7 @@ import br.com.empresa.service.ServicoBeanLocal;
 import br.com.empresa.view.util.MascaraJFormattedTextField;
 import br.com.empresa.view.util.RowData;
 import br.com.empresa.view.util.TableModel;
+import br.com.empresa.vo.ClienteVO;
 import br.com.empresa.vo.ProdutoVO;
 import br.com.empresa.vo.enums.StatusEnum;
 
@@ -227,7 +228,9 @@ public class ConsultaProdutoView extends JDialog {
 					}else {
 						System.out.println("Arquivo");
 						
-						//FALTA FAZER A INSERÇÃO
+						EntityManager em = HibernateUtil.getEntityManager();
+						
+						
 					}
 				}
 				
@@ -241,7 +244,14 @@ public class ConsultaProdutoView extends JDialog {
 		btnExportarCSV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//Vai ser preciso pegar o resultado do SQL que aparece na listagem de produtos na tabela 
+				//Vai ser preciso pegar o resultado do SQL que aparece na listagem de produtos na tabela e a partir dele, gerar um arquivo.
+				
+				File arquivoDestino = null;
+				JFileChooser jFileChooser = new JFileChooser();
+				JFileChooser.setDefaultLocale(getLocale());
+				
+				
+				
 			}
 		});
 		btnExportarCSV.setBounds(162, 370, 133, 23);
