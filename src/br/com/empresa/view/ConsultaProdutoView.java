@@ -197,45 +197,8 @@ public class ConsultaProdutoView extends JDialog {
 		JButton btnImportarCSV = new JButton("Importar CSV");
 		btnImportarCSV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				EntityManager em = HibernateUtil.getEntityManager();
-				
-				File arquivoOrigem = null;
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-				int opcao = fileChooser.showDialog(fileChooser, null);
-				
-				if(opcao == JFileChooser.APPROVE_OPTION) {
-					
-					arquivoOrigem = fileChooser.getSelectedFile();
-					
-					System.out.println(arquivoOrigem.getAbsolutePath());
-					System.out.println(arquivoOrigem.getName());
-					
-					lerPastaDoArquivo(arquivoOrigem);
-				}else {
-					JOptionPane.showMessageDialog(null, "Não pode seguir");
-				}
+				importarCSV();
 			}
-
-			private void lerPastaDoArquivo(File arquivoOrigem) {
-				File[]	listagem = arquivoOrigem.listFiles();
-				
-				for(File file : listagem) {
-					System.out.println(file.getAbsolutePath());
-					if(file.isDirectory()) {
-						System.out.println("Arquivo");
-					}else {
-						System.out.println("Arquivo");
-						
-						EntityManager em = HibernateUtil.getEntityManager();
-						
-						
-					}
-				}
-				
-			}
-
 		});
 		btnImportarCSV.setBounds(12, 370, 140, 23);
 		getContentPane().add(btnImportarCSV);
@@ -243,15 +206,14 @@ public class ConsultaProdutoView extends JDialog {
 		JButton btnExportarCSV = new JButton("Exportar CSV");
 		btnExportarCSV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//Vai ser preciso pegar o resultado do SQL que aparece na listagem de produtos na tabela e a partir dele, gerar um arquivo.
-				
+
+				// Vai ser preciso pegar o resultado do SQL que aparece na listagem de produtos
+				// na tabela e a partir dele, gerar um arquivo.
+
 				File arquivoDestino = null;
 				JFileChooser jFileChooser = new JFileChooser();
 				JFileChooser.setDefaultLocale(getLocale());
-				
-				
-				
+
 			}
 		});
 		btnExportarCSV.setBounds(162, 370, 133, 23);
@@ -262,6 +224,29 @@ public class ConsultaProdutoView extends JDialog {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
+	}
+
+	private void importarCSV() {
+		File arquivoOrigem = null;
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		int opcao = fileChooser.showDialog(fileChooser, null);
+
+		if (opcao == JFileChooser.APPROVE_OPTION) {
+
+			arquivoOrigem = fileChooser.getSelectedFile();
+
+			try {
+				servicoBeanLocal.importarProdutosViaCSV(arquivoOrigem, Dados.getClienteSelecionado());
+
+				pesquisar();
+			} catch (BOException e) {
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar a operação.", "Erro",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Não pode seguir");
+		}
 	}
 
 	private void adicionarRegistro() {
