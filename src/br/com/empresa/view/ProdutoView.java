@@ -68,7 +68,7 @@ public class ProdutoView extends JDialog {
 
 		setBounds(100, 100, 466, 392);
 
-		//Coloca a tela no centro da janela.
+		// Coloca a tela no centro da janela.
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 		getContentPane().setLayout(null);
@@ -154,37 +154,29 @@ public class ProdutoView extends JDialog {
 		});
 		btnFechar.setBounds(333, 306, 117, 25);
 		getContentPane().add(btnFechar);
-		
+
 		JLabel lblLucro = new JLabel("Lucro *:");
 		lblLucro.setBounds(12, 185, 84, 14);
 		getContentPane().add(lblLucro);
-		
-		textFdFLucro = new JTextField();
-		textFdFLucro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//RESULTADO DO VALOR DA VENDA - COMPRA
-			}
-		});
-		
+
 		textFdFLucro.setEditable(false);
 		textFdFLucro.setBounds(128, 187, 117, 20);
 		getContentPane().add(textFdFLucro);
 		textFdFLucro.setColumns(10);
-		
+
 		JLabel lblDataFabricacao = new JLabel("Data Fabricação:");
 		lblDataFabricacao.setBounds(12, 220, 84, 14);
 		getContentPane().add(lblDataFabricacao);
-		
+
 		JLabel lblDataValidade = new JLabel("Data Validade:");
 		lblDataValidade.setBounds(12, 245, 84, 14);
 		getContentPane().add(lblDataValidade);
-		
+
 		tFtDataFabricacao = new JTextField();
 		tFtDataFabricacao.setBounds(128, 217, 132, 20);
 		getContentPane().add(tFtDataFabricacao);
 		tFtDataFabricacao.setColumns(10);
-		
+
 		textField = new JTextField();
 		textField.setBounds(128, 242, 132, 20);
 		getContentPane().add(textField);
@@ -192,64 +184,66 @@ public class ProdutoView extends JDialog {
 	}
 
 	private void salvar() {
-		
+
 		try {
-			
+
 			String codigo = tfcodigo.getText();
-			if(codigo.trim().length() > 0) {
+			if (codigo.trim().length() > 0) {
 				produtoVO.setId(new BigInteger(codigo));
 			}
-			
+
 			String descri = tfDescricao.getText();
 			produtoVO.setDescri(descri);
 
 			String vlrcom = ftfVlrCompra.getText().trim();
 			vlrcom = vlrcom.replaceAll("\\.", "").replaceAll(",", ".");
-			if(vlrcom.length() > 1) {
+			if (vlrcom.length() > 1) {
 				BigDecimal vlrCompra = new BigDecimal(vlrcom);
 				produtoVO.setValcom(vlrCompra);
 			}
-			
+
 			String vlrven = ftfVlrVenda.getText().trim();
 			vlrven = vlrven.replaceAll("\\.", "").replaceAll(",", ".");
-			if(vlrven.length() > 1) {
+			if (vlrven.length() > 1) {
 				BigDecimal vlrVenda = new BigDecimal(vlrven);
 				produtoVO.setValven(vlrVenda);
 			}
-			
+
 			String qtd = ftfQtd.getText().trim();
 			qtd = qtd.replaceAll("\\.", "").replaceAll(",", ".");
-			if(qtd.length() > 1) {
+			if (qtd.length() > 1) {
 				BigDecimal qtdest = new BigDecimal(qtd);
 				produtoVO.setQtdest(qtdest);
 			}
-			
+
 			String codbar = ftfCodBar.getText().trim();
-			if(codbar.length() > 0) {
+			if (codbar.length() > 0) {
 				produtoVO.setCodbar(codbar);
 			}
-			
-			StatusEnum status = (StatusEnum)cbStatus.getSelectedItem();
-			if(status != null) {
+
+			StatusEnum status = (StatusEnum) cbStatus.getSelectedItem();
+			if (status != null) {
 				produtoVO.setStatus(status.name());
 			}
-			
+
 			produtoVO.setClient(Dados.getClienteSelecionado());
-			
+
 			servicoBeanLocal.salvarProduto(produtoVO);
-			
+
 			tfcodigo.setText(produtoVO.getId().toString());
-			
+
 			consultaProdutoView.pesquisar();
-			
-			JOptionPane.showMessageDialog(this, "Operação realizada com sucesso!", "Mensagem de confirmação", JOptionPane.INFORMATION_MESSAGE);
-			
+
+			JOptionPane.showMessageDialog(this, "Operação realizada com sucesso!", "Mensagem de confirmação",
+					JOptionPane.INFORMATION_MESSAGE);
+
 		} catch (BOValidationException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Mensagem de alerta", JOptionPane.WARNING_MESSAGE);
 		} catch (BOException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "Ocorreu um erro ao realizar a operação!", "Mensagem de erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Ocorreu um erro ao realizar a operação!", "Mensagem de erro",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
