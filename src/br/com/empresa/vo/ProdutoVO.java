@@ -3,6 +3,9 @@ package br.com.empresa.vo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,8 +18,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.br.TituloEleitoral;
 
 @Entity
 @Table(name = "ESPRODUT")
@@ -28,61 +34,96 @@ public class ProdutoVO implements Serializable {
 	@Basic(optional = false)
 	@NotNull
 	@Column(name = "id", nullable = false)
-	@SequenceGenerator(name = "SQ_ESPRODUT", sequenceName = "SQ_ESPRODUT",
-			allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.AUTO, 
-		generator = "SQ_ESPRODUT")
+	@SequenceGenerator(name = "SQ_ESPRODUT", sequenceName = "SQ_ESPRODUT", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SQ_ESPRODUT")
 	private BigInteger id;
-	
-	//Nome do produto - 100 caracteres
+
+	// Nome do produto - 100 caracteres
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 100)
 	@Column(name = "descri", nullable = false, length = 100)
 	private String descri;
-	
-	//Código de barras - 20 caracteres
+
+	// Código de barras - 20 caracteres
 	@Basic
 	@Column(name = "codbar", length = 20)
 	private String codbar;
-	
-	//Status - 1 caracter
+
+	// Status - 1 caracter
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 1)
 	@Column(name = "status", nullable = false, length = 1)
 	private String status;
-	
-	//Quantidade em estoque - 7 inteiros e 4 decimais
+
+	// Quantidade em estoque - 7 inteiros e 4 decimais
 	@Basic(optional = false)
 	@NotNull
 	@Column(name = "qtdest", nullable = false, precision = 7, scale = 4)
 	private BigDecimal qtdest;
-	
-	//Valor de compra - 7 inteiros e 2 decimais
+
+	// Valor de compra - 7 inteiros e 2 decimais
 	@Basic(optional = false)
 	@NotNull
 	@Column(name = "vlrcom", nullable = false, precision = 7, scale = 2)
 	private BigDecimal valcom;
-		
-	//Valor de venda - 7 inteiros e 2 decimais
+
+	// Valor de venda - 7 inteiros e 2 decimais
 	@Basic(optional = false)
 	@NotNull
 	@Column(name = "vlrven", nullable = false, precision = 7, scale = 2)
 	private BigDecimal valven;
 	
-	//Cliente
+	//Valor Lucro
+//	@Basic
+//	@Column(name = "valorLucro", precision = 7, scale = 2)
+//	private BigDecimal valorLucro;
+
+	// Cliente
 	@NotNull
-	@JoinColumn(name = "client", referencedColumnName = "id", 
-		nullable = false)
+	@JoinColumn(name = "client", referencedColumnName = "id", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private ClienteVO client;
-	
-	//DataFabricacao
-//	@Basic
-//	@Column(name = "dtFabricacao", )
-	
-	
+
+//	DataFabricacao
+	@Basic
+	@Column
+	private Date dtFabricacao;
+
+//	DataValidade
+	@Basic
+	@Column
+	private Date dtValidade;
+
+	public Date getDtValidade() {
+		return dtValidade;
+	}
+
+	public void setDtValidade(Date dtValidade) {
+		this.dtValidade = dtValidade;
+	}
+
+	public String getDtFormatadaValidade() throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String dataValidade = sdf.format(dtValidade);
+		return dataValidade;
+	}
+
+	public Date getDtFabricacao() {
+		return dtFabricacao;
+	}
+
+	public void setDtFabricacao(Date dtFabricacao) {
+		this.dtFabricacao = dtFabricacao;
+	}
+
+	public String getDtFormatadaFabricacao() throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String dataFabricao = sdf.format(dtFabricacao);
+		return dataFabricao;
+	}
+
 	public ProdutoVO() {
 	}
 
@@ -123,7 +164,6 @@ public class ProdutoVO implements Serializable {
 		this.qtdest = qtdest;
 	}
 
-
 	public ClienteVO getClient() {
 		return client;
 	}
@@ -131,7 +171,7 @@ public class ProdutoVO implements Serializable {
 	public void setClient(ClienteVO client) {
 		this.client = client;
 	}
-	
+
 	public BigDecimal getValcom() {
 		return valcom;
 	}

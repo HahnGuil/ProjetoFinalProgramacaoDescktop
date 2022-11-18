@@ -5,14 +5,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
+import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import antlr.collections.List;
 import br.com.empresa.dao.HibernateUtil;
+import br.com.empresa.vo.ProdutoVO;
 
 public class Testes {
 
@@ -47,10 +48,10 @@ public class Testes {
 				System.out.println("Arquivo");
 
 				EntityManager em = HibernateUtil.getEntityManager();
-				
+
 				FileReader fileReader = new FileReader(arquivoOrigem);
 				BufferedReader bufferedReader = new BufferedReader(fileReader);
-				
+
 				String linha = null;
 
 				int numLinha = 0;
@@ -66,29 +67,19 @@ public class Testes {
 
 							String descri = particionamento[1].replaceAll("\\s+", " ");
 							String codbar = particionamento[2].trim();
-//						String status = particionamento[3].trim();
 
-							
-
-//						ps.setString(1, descri);
-//						ps.setString(2, codbar);
-//						ps.setString(3, "A");
-//						ps.setBigDecimal(4, BigDecimal.ZERO);
-//						ps.setBigDecimal(5, BigDecimal.ZERO);
-//						ps.setBigDecimal(6, BigDecimal.ZERO);
-//						ps.setLong(7, 1L);
-//
-//						ps.execute();
-//						ps.close();
+							ProdutoVO produto = new ProdutoVO();
 
 						}
 
 					}
+
+					em.close();
+
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 
 			}
 		}
@@ -99,8 +90,46 @@ public class Testes {
 
 		Testes testes = new Testes();
 
-		testes.lerArquivo();
+//		testes.lerArquivo();
+		testes.escreverArquivo();
 
+	}
+
+	private void escreverArquivo() {
+		
+	/* while(enquanto tiver retorno da consulta sql){
+	 * 	Precisa criar uma varíavel auxiliar para converter o ID que vem em big interger para string
+	 * 
+	 * Criar um array, onde cada posição dele vai ser uma das colunas do arquivo. 
+	 * 
+	 * Primeira coluna: codigo
+	 * segunda: descri:
+	 * terceia: codbar
+	 * quarta: qtEstoque
+	 * quinta: vlrcompra
+	 * sexta: vlrvenda
+	 * sétima: vlrlucro
+	 * oitava: datavalidade
+	 * 
+	 * 
+	 * 
+	 * }
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+		
+		
+		
+			
 	}
 
 }

@@ -41,6 +41,7 @@ public class ProdutoView extends JDialog {
 
 	private IServicoBeanLocal servicoBeanLocal;
 	private ConsultaProdutoView consultaProdutoView;
+	private JTextField textFdFLucro;
 
 	/**
 	 * Create the dialog.
@@ -63,7 +64,7 @@ public class ProdutoView extends JDialog {
 
 		produtoVO = new ProdutoVO();
 
-		setBounds(100, 100, 466, 300);
+		setBounds(100, 100, 466, 392);
 
 		//Coloca a tela no centro da janela.
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -126,12 +127,12 @@ public class ProdutoView extends JDialog {
 		getContentPane().add(ftfVlrVenda);
 
 		JLabel lbStatus = new JLabel("Status: *");
-		lbStatus.setBounds(12, 191, 109, 15);
+		lbStatus.setBounds(12, 276, 109, 15);
 		getContentPane().add(lbStatus);
 
 		cbStatus = new JComboBox();
 		cbStatus.setModel(new DefaultComboBoxModel(StatusEnum.values()));
-		cbStatus.setBounds(128, 186, 114, 24);
+		cbStatus.setBounds(128, 271, 114, 24);
 		getContentPane().add(cbStatus);
 
 		JButton btnSalvar = new JButton("Salvar");
@@ -140,7 +141,7 @@ public class ProdutoView extends JDialog {
 				salvar();
 			}
 		});
-		btnSalvar.setBounds(208, 234, 117, 25);
+		btnSalvar.setBounds(204, 306, 117, 25);
 		getContentPane().add(btnSalvar);
 
 		JButton btnFechar = new JButton("Fechar");
@@ -149,8 +150,24 @@ public class ProdutoView extends JDialog {
 				fechar();
 			}
 		});
-		btnFechar.setBounds(337, 234, 117, 25);
+		btnFechar.setBounds(333, 306, 117, 25);
 		getContentPane().add(btnFechar);
+		
+		JLabel lblLucro = new JLabel("Lucro *:");
+		lblLucro.setBounds(12, 185, 84, 14);
+		getContentPane().add(lblLucro);
+		
+		textFdFLucro = new JTextField();
+		textFdFLucro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//RESULTADO DO VALOR DA VENDA - COMPRA
+			}
+		});
+		textFdFLucro.setEditable(false);
+		textFdFLucro.setBounds(128, 187, 117, 20);
+		getContentPane().add(textFdFLucro);
+		textFdFLucro.setColumns(10);
 	}
 
 	private void salvar() {
@@ -231,5 +248,4 @@ public class ProdutoView extends JDialog {
 		setVisible(false);
 		dispose();
 	}
-
 }
