@@ -28,6 +28,7 @@ public class ProdutoBO implements IProdutoBO {
 
 		return produtoDAO.buscarProdutoPorId(produtoVO);
 	}
+	//
 
 	@Override
 	public List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException {
