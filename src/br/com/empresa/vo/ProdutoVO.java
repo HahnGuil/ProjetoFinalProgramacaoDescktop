@@ -75,6 +75,16 @@ public class ProdutoVO implements Serializable {
 	@Column(name = "vlrven", nullable = false, precision = 7, scale = 2)
 	private BigDecimal valven;
 
+//	DataFabricacao
+	@Basic
+	@Column(name = "dtFabricacao")
+	private Date dtFabricacao;
+
+//	DataValidade
+	@Basic
+	@Column(name = "dtValidade")
+	private Date dtValidade;
+
 	// Valor Lucro
 //	@Basic
 //	@Column(name = "valorLucro", precision = 7, scale = 2)
@@ -86,15 +96,7 @@ public class ProdutoVO implements Serializable {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private ClienteVO client;
 
-//	DataFabricacao
-	@Basic
-	@Column
-	private Date dtFabricacao;
 
-//	DataValidade
-	@Basic
-	@Column
-	private Date dtValidade;
 
 	public Date getDtValidade() {
 		return dtValidade;

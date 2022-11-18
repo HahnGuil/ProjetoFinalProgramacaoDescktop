@@ -209,7 +209,7 @@ public class Testes {
 		 * 
 		 */
 
-		testes.selecionarArquivo();
+		//testes.selecionarArquivo();
 
 	}
 
