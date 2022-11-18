@@ -19,13 +19,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.br.TituloEleitoral;
 
 @Entity
-@Table(name = "ESPRODUT")
+@Table(name = "ESPRODUT", schema = "public")
 public class ProdutoVO implements Serializable {
 
 	private static final long serialVersionUID = 3929961339408678201L;
@@ -75,28 +76,28 @@ public class ProdutoVO implements Serializable {
 	@Column(name = "vlrven", nullable = false, precision = 7, scale = 2)
 	private BigDecimal valven;
 
-//	DataFabricacao
-	@Basic
-	@Column(name = "dtFabricacao")
+	// DataFabricacao
+	@Basic(optional = true)
+	@Column(name = "dtfabricacao", nullable = true)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dtFabricacao;
 
-//	DataValidade
-	@Basic
-	@Column(name = "dtValidade")
+	// DataValidade
+	@Basic(optional = true)
+	@Column(name = "dtvalidade", nullable = true)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dtValidade;
 
 	// Valor Lucro
-//	@Basic
-//	@Column(name = "valorLucro", precision = 7, scale = 2)
-//	private BigDecimal valorLucro;
+	// @Basic
+	// @Column(name = "valorLucro", precision = 7, scale = 2)
+	// private BigDecimal valorLucro;
 
 	// Cliente
 	@NotNull
 	@JoinColumn(name = "client", referencedColumnName = "id", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private ClienteVO client;
-
-
 
 	public Date getDtValidade() {
 		return dtValidade;
