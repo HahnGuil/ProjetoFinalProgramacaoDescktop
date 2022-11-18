@@ -36,12 +36,14 @@ public class ProdutoView extends JDialog {
 	private JFormattedTextField ftfQtd;
 	private JFormattedTextField ftfVlrCompra;
 	private JFormattedTextField ftfVlrVenda;
+	private JFormattedTextField textFieldLucro;
 
 	private ProdutoVO produtoVO;
 
 	private IServicoBeanLocal servicoBeanLocal;
 	private ConsultaProdutoView consultaProdutoView;
-
+	private JTextField tFtDataFabricacao;
+	private JTextField textField;
 	/**
 	 * Create the dialog.
 	 */
@@ -63,9 +65,9 @@ public class ProdutoView extends JDialog {
 
 		produtoVO = new ProdutoVO();
 
-		setBounds(100, 100, 466, 300);
+		setBounds(100, 100, 466, 392);
 
-		//Coloca a tela no centro da janela.
+		// Coloca a tela no centro da janela.
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 		getContentPane().setLayout(null);
@@ -86,7 +88,7 @@ public class ProdutoView extends JDialog {
 
 		tfDescricao = new JTextField();
 		tfDescricao.setColumns(10);
-		tfDescricao.setBounds(128, 41, 322, 19);
+		tfDescricao.setBounds(128, 41, 312, 19);
 		getContentPane().add(tfDescricao);
 
 		JLabel lblCodBar = new JLabel("Cód. Barras: *");
@@ -126,12 +128,12 @@ public class ProdutoView extends JDialog {
 		getContentPane().add(ftfVlrVenda);
 
 		JLabel lbStatus = new JLabel("Status: *");
-		lbStatus.setBounds(12, 191, 109, 15);
+		lbStatus.setBounds(12, 276, 109, 15);
 		getContentPane().add(lbStatus);
 
 		cbStatus = new JComboBox();
 		cbStatus.setModel(new DefaultComboBoxModel(StatusEnum.values()));
-		cbStatus.setBounds(128, 186, 114, 24);
+		cbStatus.setBounds(128, 271, 114, 24);
 		getContentPane().add(cbStatus);
 
 		JButton btnSalvar = new JButton("Salvar");
@@ -140,7 +142,7 @@ public class ProdutoView extends JDialog {
 				salvar();
 			}
 		});
-		btnSalvar.setBounds(208, 234, 117, 25);
+		btnSalvar.setBounds(204, 306, 117, 25);
 		getContentPane().add(btnSalvar);
 
 		JButton btnFechar = new JButton("Fechar");
@@ -149,69 +151,102 @@ public class ProdutoView extends JDialog {
 				fechar();
 			}
 		});
-		btnFechar.setBounds(337, 234, 117, 25);
+		btnFechar.setBounds(333, 306, 117, 25);
 		getContentPane().add(btnFechar);
+
+		JLabel lblLucro = new JLabel("Lucro *:");
+		lblLucro.setBounds(12, 185, 84, 14);
+		getContentPane().add(lblLucro);
+
+		JLabel lblDataFabricacao = new JLabel("Data Fabricação:");
+		lblDataFabricacao.setBounds(12, 220, 84, 14);
+		getContentPane().add(lblDataFabricacao);
+
+		JLabel lblDataValidade = new JLabel("Data Validade:");
+		lblDataValidade.setBounds(12, 245, 84, 14);
+		getContentPane().add(lblDataValidade);
+
+		tFtDataFabricacao = new JTextField();
+		tFtDataFabricacao.setBounds(128, 217, 132, 20);
+		getContentPane().add(tFtDataFabricacao);
+		tFtDataFabricacao.setColumns(10);
+
+		textField = new JTextField();
+		textField.setBounds(128, 242, 132, 20);
+		getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		textFieldLucro = new JFormattedTextField();
+		textFieldLucro.setEditable(false);
+		textFieldLucro.setBounds(126, 182, 116, 20);
+		getContentPane().add(textFieldLucro);
+		textFieldLucro.setColumns(10);
+
 	}
 
 	private void salvar() {
-		
+
 		try {
-			
+
 			String codigo = tfcodigo.getText();
-			if(codigo.trim().length() > 0) {
+			if (codigo.trim().length() > 0) {
 				produtoVO.setId(new BigInteger(codigo));
 			}
-			
+
 			String descri = tfDescricao.getText();
 			produtoVO.setDescri(descri);
 
 			String vlrcom = ftfVlrCompra.getText().trim();
 			vlrcom = vlrcom.replaceAll("\\.", "").replaceAll(",", ".");
-			if(vlrcom.length() > 1) {
+			if (vlrcom.length() > 1) {
 				BigDecimal vlrCompra = new BigDecimal(vlrcom);
 				produtoVO.setValcom(vlrCompra);
 			}
-			
+
 			String vlrven = ftfVlrVenda.getText().trim();
 			vlrven = vlrven.replaceAll("\\.", "").replaceAll(",", ".");
-			if(vlrven.length() > 1) {
+			if (vlrven.length() > 1) {
 				BigDecimal vlrVenda = new BigDecimal(vlrven);
 				produtoVO.setValven(vlrVenda);
 			}
-			
+
 			String qtd = ftfQtd.getText().trim();
 			qtd = qtd.replaceAll("\\.", "").replaceAll(",", ".");
-			if(qtd.length() > 1) {
+			if (qtd.length() > 1) {
 				BigDecimal qtdest = new BigDecimal(qtd);
 				produtoVO.setQtdest(qtdest);
 			}
-			
+
 			String codbar = ftfCodBar.getText().trim();
-			if(codbar.length() > 0) {
+			if (codbar.length() > 0) {
 				produtoVO.setCodbar(codbar);
 			}
-			
-			StatusEnum status = (StatusEnum)cbStatus.getSelectedItem();
-			if(status != null) {
+
+			StatusEnum status = (StatusEnum) cbStatus.getSelectedItem();
+			if (status != null) {
 				produtoVO.setStatus(status.name());
 			}
-			
+
 			produtoVO.setClient(Dados.getClienteSelecionado());
-			
+
 			servicoBeanLocal.salvarProduto(produtoVO);
-			
+
 			tfcodigo.setText(produtoVO.getId().toString());
 			
+			textFieldLucro.setText(produtoVO.lucro().toString());
+
 			consultaProdutoView.pesquisar();
-			
-			JOptionPane.showMessageDialog(this, "Operação realizada com sucesso!", "Mensagem de confirmação", JOptionPane.INFORMATION_MESSAGE);
-			
+
+			JOptionPane.showMessageDialog(this, "Operação realizada com sucesso!", "Mensagem de confirmação",
+					JOptionPane.INFORMATION_MESSAGE);
+
 		} catch (BOValidationException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Mensagem de alerta", JOptionPane.WARNING_MESSAGE);
 		} catch (BOException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "Ocorreu um erro ao realizar a operação!", "Mensagem de erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Ocorreu um erro ao realizar a operação!", "Mensagem de erro",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -231,5 +266,4 @@ public class ProdutoView extends JDialog {
 		setVisible(false);
 		dispose();
 	}
-
 }

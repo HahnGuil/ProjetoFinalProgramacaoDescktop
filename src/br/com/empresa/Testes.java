@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import antlr.collections.List;
 import br.com.empresa.dao.HibernateUtil;
 import br.com.empresa.vo.ClienteVO;
 import br.com.empresa.vo.ProdutoVO;
@@ -155,6 +157,9 @@ public class Testes {
 						}
 
 					}
+
+					em.close();
+
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -171,7 +176,40 @@ public class Testes {
 
 		Testes testes = new Testes();
 
-		testes.selecionarArquivo();
+
+//		testes.lerArquivo();
+		testes.escreverArquivo();
+
+	}
+
+	private void escreverArquivo() {
+
+		/*
+		 * while(enquanto tiver retorno da consulta sql){ Precisa criar uma varíavel
+		 * auxiliar para converter o ID que vem em big interger para string
+		 * 
+		 * Criar um array, onde cada posição dele vai ser uma das colunas do arquivo.
+		 * 
+		 * Primeira coluna: codigo segunda: descri: terceia: codbar quarta: qtEstoque
+		 * quinta: vlrcompra sexta: vlrvenda sétima: vlrlucro oitava: datavalidade
+		 * 
+		 * 
+		 * 
+		 * }
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
+
+		//testes.selecionarArquivo();
 
 	}
 
