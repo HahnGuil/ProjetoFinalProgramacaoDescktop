@@ -96,40 +96,32 @@ public class Testes {
 	}
 
 	private void escreverArquivo() {
-		
-	/* while(enquanto tiver retorno da consulta sql){
-	 * 	Precisa criar uma varíavel auxiliar para converter o ID que vem em big interger para string
-	 * 
-	 * Criar um array, onde cada posição dele vai ser uma das colunas do arquivo. 
-	 * 
-	 * Primeira coluna: codigo
-	 * segunda: descri:
-	 * terceia: codbar
-	 * quarta: qtEstoque
-	 * quinta: vlrcompra
-	 * sexta: vlrvenda
-	 * sétima: vlrlucro
-	 * oitava: datavalidade
-	 * 
-	 * 
-	 * 
-	 * }
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
-		
-		
-		
-			
+
+		/*
+		 * while(enquanto tiver retorno da consulta sql){ Precisa criar uma varíavel
+		 * auxiliar para converter o ID que vem em big interger para string
+		 * 
+		 * Criar um array, onde cada posição dele vai ser uma das colunas do arquivo.
+		 * 
+		 * Primeira coluna: codigo segunda: descri: terceia: codbar quarta: qtEstoque
+		 * quinta: vlrcompra sexta: vlrvenda sétima: vlrlucro oitava: datavalidade
+		 * 
+		 * 
+		 * 
+		 * }
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
+
 	}
 
 }

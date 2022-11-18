@@ -36,15 +36,14 @@ public class ProdutoView extends JDialog {
 	private JFormattedTextField ftfQtd;
 	private JFormattedTextField ftfVlrCompra;
 	private JFormattedTextField ftfVlrVenda;
+	private JFormattedTextField textFieldLucro;
 
 	private ProdutoVO produtoVO;
 
 	private IServicoBeanLocal servicoBeanLocal;
 	private ConsultaProdutoView consultaProdutoView;
-	private JTextField textFdFLucro;
 	private JTextField tFtDataFabricacao;
 	private JTextField textField;
-
 	/**
 	 * Create the dialog.
 	 */
@@ -159,11 +158,6 @@ public class ProdutoView extends JDialog {
 		lblLucro.setBounds(12, 185, 84, 14);
 		getContentPane().add(lblLucro);
 
-		textFdFLucro.setEditable(false);
-		textFdFLucro.setBounds(128, 187, 117, 20);
-		getContentPane().add(textFdFLucro);
-		textFdFLucro.setColumns(10);
-
 		JLabel lblDataFabricacao = new JLabel("Data Fabricação:");
 		lblDataFabricacao.setBounds(12, 220, 84, 14);
 		getContentPane().add(lblDataFabricacao);
@@ -181,6 +175,13 @@ public class ProdutoView extends JDialog {
 		textField.setBounds(128, 242, 132, 20);
 		getContentPane().add(textField);
 		textField.setColumns(10);
+		
+		textFieldLucro = new JFormattedTextField();
+		textFieldLucro.setEditable(false);
+		textFieldLucro.setBounds(126, 182, 116, 20);
+		getContentPane().add(textFieldLucro);
+		textFieldLucro.setColumns(10);
+
 	}
 
 	private void salvar() {
@@ -231,6 +232,8 @@ public class ProdutoView extends JDialog {
 			servicoBeanLocal.salvarProduto(produtoVO);
 
 			tfcodigo.setText(produtoVO.getId().toString());
+			
+			textFieldLucro.setText(produtoVO.lucro().toString());
 
 			consultaProdutoView.pesquisar();
 

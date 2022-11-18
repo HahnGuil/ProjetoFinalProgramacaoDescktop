@@ -124,13 +124,11 @@ public class ProdutoVO implements Serializable {
 		return dataFabricao;
 	}
 
-	
-	//Metodo para Calcular o Lucro. 
+	// Metodo para Calcular o Lucro.
 	public BigDecimal lucro() {
 
 		BigDecimal BigCompra = valcom;
 		BigDecimal BigVenda = valven;
-
 		BigDecimal BigLucro = BigVenda.subtract(BigCompra);
 
 		return BigLucro;
