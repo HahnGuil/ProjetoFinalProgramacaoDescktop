@@ -42,6 +42,8 @@ public class ProdutoView extends JDialog {
 	private IServicoBeanLocal servicoBeanLocal;
 	private ConsultaProdutoView consultaProdutoView;
 	private JTextField textFdFLucro;
+	private JTextField tFtDataFabricacao;
+	private JTextField textField;
 
 	/**
 	 * Create the dialog.
@@ -87,7 +89,7 @@ public class ProdutoView extends JDialog {
 
 		tfDescricao = new JTextField();
 		tfDescricao.setColumns(10);
-		tfDescricao.setBounds(128, 41, 322, 19);
+		tfDescricao.setBounds(128, 41, 312, 19);
 		getContentPane().add(tfDescricao);
 
 		JLabel lblCodBar = new JLabel("Cód. Barras: *");
@@ -164,10 +166,29 @@ public class ProdutoView extends JDialog {
 				//RESULTADO DO VALOR DA VENDA - COMPRA
 			}
 		});
+		
 		textFdFLucro.setEditable(false);
 		textFdFLucro.setBounds(128, 187, 117, 20);
 		getContentPane().add(textFdFLucro);
 		textFdFLucro.setColumns(10);
+		
+		JLabel lblDataFabricacao = new JLabel("Data Fabricação:");
+		lblDataFabricacao.setBounds(12, 220, 84, 14);
+		getContentPane().add(lblDataFabricacao);
+		
+		JLabel lblDataValidade = new JLabel("Data Validade:");
+		lblDataValidade.setBounds(12, 245, 84, 14);
+		getContentPane().add(lblDataValidade);
+		
+		tFtDataFabricacao = new JTextField();
+		tFtDataFabricacao.setBounds(128, 217, 132, 20);
+		getContentPane().add(tFtDataFabricacao);
+		tFtDataFabricacao.setColumns(10);
+		
+		textField = new JTextField();
+		textField.setBounds(128, 242, 132, 20);
+		getContentPane().add(textField);
+		textField.setColumns(10);
 	}
 
 	private void salvar() {

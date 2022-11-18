@@ -74,8 +74,8 @@ public class ProdutoVO implements Serializable {
 	@NotNull
 	@Column(name = "vlrven", nullable = false, precision = 7, scale = 2)
 	private BigDecimal valven;
-	
-	//Valor Lucro
+
+	// Valor Lucro
 //	@Basic
 //	@Column(name = "valorLucro", precision = 7, scale = 2)
 //	private BigDecimal valorLucro;
@@ -122,6 +122,18 @@ public class ProdutoVO implements Serializable {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String dataFabricao = sdf.format(dtFabricacao);
 		return dataFabricao;
+	}
+
+	
+	//Metodo para Calcular o Lucro. 
+	public BigDecimal lucro() {
+
+		BigDecimal BigCompra = valcom;
+		BigDecimal BigVenda = valven;
+
+		BigDecimal BigLucro = BigVenda.subtract(BigCompra);
+
+		return BigLucro;
 	}
 
 	public ProdutoVO() {
