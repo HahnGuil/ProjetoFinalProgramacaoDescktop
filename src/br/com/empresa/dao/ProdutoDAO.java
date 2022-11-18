@@ -1,5 +1,11 @@
 package br.com.empresa.dao;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +40,6 @@ public class ProdutoDAO implements IProdutoDAO {
 		em.close();
 
 		return produto;
-
-		// List<ProdutoVO> produtoVOs = Dados.getProdutoVOs();
-
-		// for (ProdutoVO p : produtoVOs) {
-
-		// if (produtoVO.equals(p)) {
-		// return p;
-		// }
-		// }
 	}
 
 	@Override
@@ -142,34 +139,105 @@ public class ProdutoDAO implements IProdutoDAO {
 	@Override
 	public void salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
 
-		List<ProdutoVO> produtoVOs = null; // Dados.getProdutoVOs();
+		// List<ProdutoVO> produtoVOs = null; // Dados.getProdutoVOs();
+		EntityManager em = HibernateUtil.getEntityManager();
 
-		if (produtoVO.getId() == null) {
-			if (produtoVOs.size() > 0) {
-				ProdutoVO ultimoProduto = produtoVOs.get(produtoVOs.size() - 1);
-				produtoVO.setId(ultimoProduto.getId().add(BigInteger.ONE));
+		try {
+
+			if (produtoVO.getId() == null) {
+				em.getTransaction().begin();
+				em.persist(produtoVO);
+				em.getTransaction().commit();
 			} else {
-				produtoVO.setId(BigInteger.ONE);
-			}
 
-			// Dados.getProdutoVOs().add(produtoVO);
-		} else {
-			for (int i = 0; i < produtoVOs.size(); i++) {
-				if (produtoVOs.get(i).equals(produtoVO)) {
-					// Dados.getProdutoVOs().set(i, produtoVO);
-				}
+				em.getTransaction().begin();
+				ProdutoVO produtoBanco = em.find(ProdutoVO.class, produtoVO.getId());
+
+				produtoBanco.setDescri(produtoVO.getDescri());
+				produtoBanco.setCodbar(produtoVO.getCodbar());
+				produtoBanco.setStatus(produtoVO.getStatus());
+				produtoBanco.setQtdest(produtoVO.getQtdest());
+				produtoBanco.setValcom(produtoVO.getValcom());
+				produtoBanco.setValven(produtoVO.getValven());
+
+				em.merge(produtoBanco);
+				em.getTransaction().commit();
 			}
+		} catch (Exception e) {
+			throw new BOException(e);
+		} finally {
+			em.close();
 		}
 	}
 
 	@Override
 	public void excluirProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
 
-		// for (int i = 0; i < Dados.getProdutoVOs().size(); i++) {
-		// if (Dados.getProdutoVOs().get(i).equals(produtoVO)) {
-		// Dados.getProdutoVOs().remove(i);
-		// }
-		// }
+		EntityManager em = HibernateUtil.getEntityManager();
+
+		try {
+			em.getTransaction().begin();
+			ProdutoVO produto = em.find(ProdutoVO.class, produtoVO.getId());
+			em.remove(produto);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			throw new BOException(e);
+		} finally {
+			em.close();
+		}
+
+	}
+
+	@Override
+	public void importarProdutosViaCSV(File file, ClienteVO clienteVO) throws BOException {
+
+		try {
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			EntityManager em = HibernateUtil.getEntityManager();
+
+			String linha = null;
+			int numLinha = 0;
+
+			while ((linha = bufferedReader.readLine()) != null) {
+				numLinha++;
+
+				if (numLinha > 1) {
+					String[] particionamento;
+
+					if (linha.contains(",")) {
+						particionamento = linha.split(",");
+					} else {
+						particionamento = linha.split(";");
+					}
+
+					String descri = particionamento[1].replaceAll("\\s+", " ");
+					String codbar = particionamento[2].trim();
+
+					ProdutoVO novoProduto = new ProdutoVO();
+					novoProduto.setDescri(descri);
+					novoProduto.setCodbar(codbar);
+					novoProduto.setClient(clienteVO);
+					novoProduto.setQtdest(BigDecimal.ZERO);
+					novoProduto.setStatus("I");
+					novoProduto.setValcom(BigDecimal.ZERO);
+					novoProduto.setValven(BigDecimal.ZERO);
+
+					em.getTransaction().begin();
+					em.persist(novoProduto);
+					em.getTransaction().commit();
+				}
+			}
+
+			fileReader.close();
+			bufferedReader.close();
+			em.close();
+
+		} catch (FileNotFoundException e) {
+			throw new BOException(e);
+		} catch (IOException e) {
+			throw new BOException(e);
+		}
 
 	}
 

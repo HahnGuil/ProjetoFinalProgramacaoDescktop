@@ -3,16 +3,43 @@ package br.com.empresa.vo;
 import java.io.Serializable;
 import java.math.BigInteger;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "SICLIUSU")
 public class UsuarioClienteVO implements Serializable {
 
 	private static final long serialVersionUID = -160930675481611138L;
 
+	@Id
+	@Basic(optional = false)
+	@NotNull
+	@Column(name = "id", nullable = false)
+	@SequenceGenerator(name = "SQ_SICLIUSU", sequenceName = "SQ_SICLIUSU", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private BigInteger id;
 
-	//Usuário
+	// Usuário
+	@NotNull
+	@JoinColumn(name = "usuari", referencedColumnName = "id", nullable = false)
+	@ManyToOne(optional = false)
 	private UsuarioVO usuarioVO;
 
-	//Cliente
+	// Cliente
+	@NotNull
+	@JoinColumn(name = "client", referencedColumnName = "id", nullable = false)
+	@ManyToOne(optional = false)
 	private ClienteVO clienteVO;
 
 	public UsuarioClienteVO() {

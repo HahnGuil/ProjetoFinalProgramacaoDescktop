@@ -1,5 +1,6 @@
 package br.com.empresa.bo;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,8 @@ import br.com.empresa.vo.ClienteVO;
 import br.com.empresa.vo.ProdutoVO;
 
 /**
- * Descreve todos os métodos relacionados a operação de consulta e manutenção de produto.
+ * Descreve todos os métodos relacionados a operação de consulta e manutenção de
+ * produto.
  */
 public interface IProdutoBO {
 
@@ -34,7 +36,8 @@ public interface IProdutoBO {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException;
+	public abstract List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar,
+			ClienteVO client) throws BOException;
 
 	/**
 	 * 
@@ -46,7 +49,8 @@ public interface IProdutoBO {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract int listarProdutoCount(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException;
+	public abstract int listarProdutoCount(BigInteger id, String descri, String status, String codbar, ClienteVO client)
+			throws BOException;
 
 	/**
 	 * Lista todos os produtos disponíveis.
@@ -58,7 +62,8 @@ public interface IProdutoBO {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract List<ProdutoVO> listarProduto(int first, int pageSize, Map<String, Object> filters, ClienteVO cliente) throws BOException;
+	public abstract List<ProdutoVO> listarProduto(int first, int pageSize, Map<String, Object> filters,
+			ClienteVO cliente) throws BOException;
 
 	/**
 	 * Consulta da quantidade de produtos existentes na base de dados.
@@ -87,5 +92,15 @@ public interface IProdutoBO {
 	 * @throws BOException
 	 */
 	public abstract void excluirProduto(ProdutoVO produtoVO) throws BOValidationException, BOException;
+
+	/**
+	 * EImporta diversos produtos via arquivo CSV.
+	 * 
+	 * @param produtoVO
+	 * @param clienteVO
+	 * @throws BOValidationException
+	 * @throws BOException
+	 */
+	public abstract void importarProdutosViaCSV(File file, ClienteVO clienteVO) throws BOException;
 
 }

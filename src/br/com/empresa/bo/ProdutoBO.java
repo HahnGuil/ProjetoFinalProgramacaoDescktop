@@ -1,5 +1,6 @@
 package br.com.empresa.bo;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,8 @@ public class ProdutoBO implements IProdutoBO {
 	//
 
 	@Override
-	public List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException {
+	public List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar, ClienteVO client)
+			throws BOException {
 
 		if (client == null || client.getId() == null) {
 			throw new BOException();
@@ -41,7 +43,8 @@ public class ProdutoBO implements IProdutoBO {
 	}
 
 	@Override
-	public int listarProdutoCount(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException {
+	public int listarProdutoCount(BigInteger id, String descri, String status, String codbar, ClienteVO client)
+			throws BOException {
 
 		if (client == null || client.getId() == null) {
 			throw new BOException();
@@ -51,7 +54,8 @@ public class ProdutoBO implements IProdutoBO {
 	}
 
 	@Override
-	public List<ProdutoVO> listarProduto(int first, int pageSize, Map<String, Object> filters, ClienteVO client) throws BOException {
+	public List<ProdutoVO> listarProduto(int first, int pageSize, Map<String, Object> filters, ClienteVO client)
+			throws BOException {
 
 		if (client == null || client.getId() == null) {
 			throw new BOException();
@@ -81,7 +85,7 @@ public class ProdutoBO implements IProdutoBO {
 			throw new BOValidationException("Descrição: erro de validação. Preenchimento obrigatório.");
 		} else if (produtoVO.getStatus() == null) {
 			throw new BOValidationException("Status: erro de validação. Preenchimento obrigatório.");
-		} else if (produtoVO.getStatus().equals("A")) { //Se for ativo.
+		} else if (produtoVO.getStatus().equals("A")) { // Se for ativo.
 
 			if (produtoVO.getQtdest() == null) {
 				throw new BOValidationException("Quantidade em estoque: erro de validação. Preenchimento obrigatório.");
@@ -104,10 +108,17 @@ public class ProdutoBO implements IProdutoBO {
 		} else if (produtoVO.getId() == null) {
 			throw new BOException();
 		}
-		
-		//TODO: No futuro fazer consulta se o produto foi utilizado em uma venda.
+
+		// TODO: No futuro fazer consulta se o produto foi utilizado em uma venda.
 
 		produtoDAO.excluirProduto(produtoVO);
+
+	}
+
+	@Override
+	public void importarProdutosViaCSV(File file, ClienteVO clienteVO) throws BOException {
+
+		produtoDAO.importarProdutosViaCSV(file, clienteVO);
 
 	}
 

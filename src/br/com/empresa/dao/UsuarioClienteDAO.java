@@ -3,6 +3,13 @@ package br.com.empresa.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import br.com.empresa.exception.BOException;
 import br.com.empresa.vo.UsuarioClienteVO;
 import br.com.empresa.vo.UsuarioVO;
@@ -16,20 +23,29 @@ public class UsuarioClienteDAO implements IUsuarioClienteDAO {
 	@Override
 	public List<UsuarioClienteVO> listarClientesUsuario(UsuarioVO usuarioVO) throws BOException {
 
-		List<UsuarioClienteVO> usuarioClienteVOs = Dados.getUsuarioClienteVOs();
+		EntityManager em = HibernateUtil.getEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		List<UsuarioClienteVO> filtro = new ArrayList<UsuarioClienteVO>();
+		CriteriaQuery<UsuarioClienteVO> criteria = cb.createQuery(UsuarioClienteVO.class);
 
-		if (usuarioClienteVOs != null) {
+		// From
+		Root<UsuarioClienteVO> usuarioClienteFrom = criteria.from(UsuarioClienteVO.class);
 
-			for (UsuarioClienteVO usuarioClienteVO : usuarioClienteVOs) {
-				if (usuarioClienteVO.getUsuarioVO().equals(usuarioVO)) {
-					filtro.add(usuarioClienteVO);
-				}
-			}
-		}
+		System.out.println("================================");
+		System.out.println("Id sendo utilizado para select: " + usuarioVO.getId());
 
-		return filtro;
+		// Where
+		Predicate usuarioClienteWhere = cb.equal(usuarioClienteFrom.get("usuarioVO"), usuarioVO.getId());
+
+		criteria.where(usuarioClienteWhere);
+
+		TypedQuery<UsuarioClienteVO> query = em.createQuery(criteria);
+
+		List<UsuarioClienteVO> usuarioClientesVO = query.getResultList();
+
+		em.close();
+
+		return usuarioClientesVO;
 	}
 
 	@Override

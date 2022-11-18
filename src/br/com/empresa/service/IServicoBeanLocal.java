@@ -1,5 +1,6 @@
 package br.com.empresa.service;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public interface IServicoBeanLocal {
 	public UsuarioVO validarAcesso(String login, String senha) throws BOValidationException, BOException;
 
 	/**
-	 * Retorna todos as ligações entre cliente e usuário. 
+	 * Retorna todos as ligações entre cliente e usuário.
 	 * 
 	 * @param usuarioVO
 	 * @return
@@ -53,7 +54,8 @@ public interface IServicoBeanLocal {
 	public abstract List<PessoaVO> listarPessoas(ClienteVO cliente) throws BOException;
 
 	/**
-	 * Lista todos as pessoas de um determinado cliente fazendo um filtro dos mesmos.
+	 * Lista todos as pessoas de um determinado cliente fazendo um filtro dos
+	 * mesmos.
 	 * 
 	 * @param tipoPessoa
 	 * @param nomePessoa
@@ -64,11 +66,13 @@ public interface IServicoBeanLocal {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract List<PessoaVO> listarPessoas(String tipoPessoa, String nomePessoa, String cpfCnpj, String cidade, String estado,
+	public abstract List<PessoaVO> listarPessoas(String tipoPessoa, String nomePessoa, String cpfCnpj, String cidade,
+			String estado,
 			ClienteVO cliente) throws BOValidationException, BOException;
 
 	/**
-	 * Lista todos as pessoas de um determinado cliente fazendo um filtro dos mesmos.
+	 * Lista todos as pessoas de um determinado cliente fazendo um filtro dos
+	 * mesmos.
 	 * 
 	 * @param first
 	 * @param pageSize
@@ -77,7 +81,8 @@ public interface IServicoBeanLocal {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract List<PessoaVO> listarPessoas(int first, int pageSize, Map<String, Object> filters, ClienteVO cliente) throws BOException;
+	public abstract List<PessoaVO> listarPessoas(int first, int pageSize, Map<String, Object> filters,
+			ClienteVO cliente) throws BOException;
 
 	/**
 	 * Exclui uma pessoa.
@@ -116,7 +121,8 @@ public interface IServicoBeanLocal {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException;
+	public abstract List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar,
+			ClienteVO client) throws BOException;
 
 	/**
 	 * 
@@ -128,7 +134,8 @@ public interface IServicoBeanLocal {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract int listarProdutoCount(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException;
+	public abstract int listarProdutoCount(BigInteger id, String descri, String status, String codbar, ClienteVO client)
+			throws BOException;
 
 	/**
 	 * Lista todos os produtos disponíveis.
@@ -140,7 +147,8 @@ public interface IServicoBeanLocal {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract List<ProdutoVO> listarProduto(int first, int pageSize, Map<String, Object> filters, ClienteVO cliente) throws BOException;
+	public abstract List<ProdutoVO> listarProduto(int first, int pageSize, Map<String, Object> filters,
+			ClienteVO cliente) throws BOException;
 
 	/**
 	 * Consulta da quantidade de produtos existentes na base de dados.
@@ -170,4 +178,13 @@ public interface IServicoBeanLocal {
 	 */
 	public abstract void excluirProduto(ProdutoVO produtoVO) throws BOValidationException, BOException;
 
+	/**
+	 * Importa diversos produtos via arquivo CSV.
+	 * 
+	 * @param file
+	 * @param cliente
+	 * @throws BOValidationException
+	 * @throws BOException
+	 */
+	public abstract void importarProdutosViaCSV(File file, ClienteVO cliente) throws BOValidationException, BOException;
 }

@@ -1,5 +1,6 @@
 package br.com.empresa.service;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,8 @@ public class ServicoBeanLocal implements IServicoBeanLocal {
 	}
 
 	@Override
-	public List<PessoaVO> listarPessoas(String tipoPessoa, String nomePessoa, String cpfCnpj, String cidade, String estado, ClienteVO cliente) throws BOValidationException, BOException {
+	public List<PessoaVO> listarPessoas(String tipoPessoa, String nomePessoa, String cpfCnpj, String cidade,
+			String estado, ClienteVO cliente) throws BOValidationException, BOException {
 
 		IPessoaBO pessoaBO = new PessoaBO();
 
@@ -66,7 +68,8 @@ public class ServicoBeanLocal implements IServicoBeanLocal {
 	}
 
 	@Override
-	public List<PessoaVO> listarPessoas(int first, int pageSize, Map<String, Object> filters, ClienteVO cliente) throws BOException {
+	public List<PessoaVO> listarPessoas(int first, int pageSize, Map<String, Object> filters, ClienteVO cliente)
+			throws BOException {
 
 		IPessoaBO pessoaBO = new PessoaBO();
 
@@ -93,26 +96,27 @@ public class ServicoBeanLocal implements IServicoBeanLocal {
 
 	@Override
 	public ProdutoVO buscarProdutoPorId(ProdutoVO produtoVO) throws BOException {
-		
+
 		IProdutoBO produtoBO = new ProdutoBO();
-		
+
 		return produtoBO.buscarProdutoPorId(produtoVO);
 	}
 
 	@Override
-	public List<ProdutoVO> listarProduto(int first, int pageSize, Map<String, Object> filters, ClienteVO cliente) throws BOException {
-		
+	public List<ProdutoVO> listarProduto(int first, int pageSize, Map<String, Object> filters, ClienteVO cliente)
+			throws BOException {
+
 		IProdutoBO produtoBO = new ProdutoBO();
-		
+
 		return produtoBO.listarProduto(first, pageSize, filters, cliente);
-		
+
 	}
 
 	@Override
 	public int listarProdutoCount(Map<String, Object> filters, ClienteVO cliente) throws BOException {
-		
+
 		IProdutoBO produtoBO = new ProdutoBO();
-		
+
 		return produtoBO.listarProdutoCount(filters, cliente);
 	}
 
@@ -127,7 +131,7 @@ public class ServicoBeanLocal implements IServicoBeanLocal {
 
 	@Override
 	public void excluirProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
-		
+
 		IProdutoBO produtoBO = new ProdutoBO();
 
 		produtoBO.excluirProduto(produtoVO);
@@ -135,20 +139,30 @@ public class ServicoBeanLocal implements IServicoBeanLocal {
 	}
 
 	@Override
-	public List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException {
-		
+	public List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar, ClienteVO client)
+			throws BOException {
+
 		IProdutoBO produtoBO = new ProdutoBO();
-		
+
 		return produtoBO.listarProduto(id, descri, status, codbar, client);
-		
+
 	}
 
 	@Override
-	public int listarProdutoCount(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException {
+	public int listarProdutoCount(BigInteger id, String descri, String status, String codbar, ClienteVO client)
+			throws BOException {
 
 		IProdutoBO produtoBO = new ProdutoBO();
-		
+
 		return produtoBO.listarProdutoCount(id, descri, status, codbar, client);
+
+	}
+
+	@Override
+	public void importarProdutosViaCSV(File file, ClienteVO clienteVO) throws BOValidationException, BOException {
+		IProdutoBO produtoBO = new ProdutoBO();
+
+		produtoBO.importarProdutosViaCSV(file, clienteVO);
 
 	}
 

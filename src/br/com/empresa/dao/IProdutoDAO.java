@@ -1,5 +1,6 @@
 package br.com.empresa.dao;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import br.com.empresa.vo.ClienteVO;
 import br.com.empresa.vo.ProdutoVO;
 
 public interface IProdutoDAO {
-	
+
 	/**
 	 * Busca um determinado produto a partir do seu código de identificação.
 	 * 
@@ -19,7 +20,7 @@ public interface IProdutoDAO {
 	 * @throws BOException
 	 */
 	public abstract ProdutoVO buscarProdutoPorId(ProdutoVO produtoVO) throws BOException;
-	
+
 	/**
 	 * Lista todos os produtos disponíveis.
 	 * 
@@ -31,8 +32,9 @@ public interface IProdutoDAO {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException;
-	
+	public abstract List<ProdutoVO> listarProduto(BigInteger id, String descri, String status, String codbar,
+			ClienteVO client) throws BOException;
+
 	/**
 	 * 
 	 * @param id
@@ -43,8 +45,9 @@ public interface IProdutoDAO {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract int listarProdutoCount(BigInteger id, String descri, String status, String codbar, ClienteVO client) throws BOException;
-	
+	public abstract int listarProdutoCount(BigInteger id, String descri, String status, String codbar, ClienteVO client)
+			throws BOException;
+
 	/**
 	 * Lista todos os produtos disponíveis.
 	 * 
@@ -55,8 +58,9 @@ public interface IProdutoDAO {
 	 * @return
 	 * @throws BOException
 	 */
-	public abstract List<ProdutoVO> listarProduto(int first, int pageSize, Map<String, Object> filters, ClienteVO cliente) throws BOException;
-	
+	public abstract List<ProdutoVO> listarProduto(int first, int pageSize, Map<String, Object> filters,
+			ClienteVO cliente) throws BOException;
+
 	/**
 	 * Consulta da quantidade de produtos existentes na base de dados.
 	 * 
@@ -66,7 +70,7 @@ public interface IProdutoDAO {
 	 * @throws BOException
 	 */
 	public abstract int listarProdutoCount(Map<String, Object> filters, ClienteVO cliente) throws BOException;
-	
+
 	/**
 	 * Salva um determinado produto na base de dados.
 	 * 
@@ -75,7 +79,7 @@ public interface IProdutoDAO {
 	 * @throws BOException
 	 */
 	public abstract void salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException;
-	
+
 	/**
 	 * Exclui um determinado produto da base de dados.
 	 * 
@@ -84,5 +88,15 @@ public interface IProdutoDAO {
 	 * @throws BOException
 	 */
 	public abstract void excluirProduto(ProdutoVO produtoVO) throws BOValidationException, BOException;
+
+	/**
+	 * Exclui um determinado produto da base de dados.
+	 * 
+	 * @param file
+	 * @param clienteVO
+	 * @throws BOValidationException
+	 * @throws BOException
+	 */
+	public abstract void importarProdutosViaCSV(File file, ClienteVO clienteVO) throws BOException;
 
 }
