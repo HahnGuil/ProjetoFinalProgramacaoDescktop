@@ -3,18 +3,29 @@ package br.com.empresa;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.Path;
 import java.sql.PreparedStatement;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import antlr.collections.List;
 import br.com.empresa.dao.HibernateUtil;
 import br.com.empresa.vo.ClienteVO;
 import br.com.empresa.vo.ProdutoVO;
@@ -176,41 +187,82 @@ public class Testes {
 
 		Testes testes = new Testes();
 
-
-//		testes.lerArquivo();
+		// testes.lerArquivo();
 		testes.escreverArquivo();
 
 	}
 
 	private void escreverArquivo() {
 
-		/*
-		 * while(enquanto tiver retorno da consulta sql){ Precisa criar uma varíavel
-		 * auxiliar para converter o ID que vem em big interger para string
-		 * 
-		 * Criar um array, onde cada posição dele vai ser uma das colunas do arquivo.
-		 * 
-		 * Primeira coluna: codigo segunda: descri: terceia: codbar quarta: qtEstoque
-		 * quinta: vlrcompra sexta: vlrvenda sétima: vlrlucro oitava: datavalidade
-		 * 
-		 * 
-		 * 
-		 * }
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
+		ClienteVO clienteVO = new ClienteVO();
+		clienteVO.setId(BigInteger.ONE);
 
-		//testes.selecionarArquivo();
+		EntityManager em = HibernateUtil.getEntityManager();
 
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<ProdutoVO> criteria = cb.createQuery(ProdutoVO.class);
+
+		// From
+		Root<ProdutoVO> produtoFrom = criteria.from(ProdutoVO.class);
+
+		// Where
+		Predicate produtoWhere = cb.equal(produtoFrom.get("client"), clienteVO);
+
+		criteria.where(produtoWhere);
+
+		TypedQuery<ProdutoVO> query = em.createQuery(criteria);
+
+		List<ProdutoVO> retornoProdutos = query.getResultList();
+
+		em.close();
+
+		File destinoArquivo = null;
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int opcao = fileChooser.showDialog(fileChooser, null);
+
+		destinoArquivo = fileChooser.getSelectedFile();
+
+		String path = destinoArquivo.getAbsolutePath() + "\\produto.csv";
+
+		File newFile = new File(path);
+
+		try {
+
+			OutputStream outputStream = new FileOutputStream(newFile, true);
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "ISO-8859-1"); // UTF-8
+			PrintWriter printWriter = new PrintWriter(outputStream, true);
+
+			printWriter.println("id,descri,codbar,status,qtdest,valcom,valven,client");
+
+			for (ProdutoVO produtoVO : retornoProdutos) {
+				printWriter.println(
+						produtoVO.getId() + "," +
+								produtoVO.getDescri() + "," +
+								produtoVO.getCodbar() + "," +
+								produtoVO.getStatus() + "," +
+								produtoVO.getQtdest() + "," +
+								produtoVO.getValcom() + "," +
+								produtoVO.getValven() + "," +
+								produtoVO.getClient().getId());
+			}
+
+			printWriter.close();
+			outputStreamWriter.close();
+			outputStream.close();
+
+			System.out.println("Escrita completa");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
