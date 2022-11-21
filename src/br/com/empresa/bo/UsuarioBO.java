@@ -22,7 +22,7 @@ public class UsuarioBO implements IUsuarioBO {
 		}
 
 		if (senha == null || senha.trim().length() == 0) {
-			throw new BOValidationException("Senha: dado inválido ou não preenchido.");
+			throw new BOValidationException("Senha: dado inválido ou não preenchido."); 
 		}
 
 		UsuarioVO usuarioVO = usuarioDAO.buscarUsuario(login, senha);

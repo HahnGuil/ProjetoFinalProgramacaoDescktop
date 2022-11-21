@@ -17,7 +17,7 @@ public class ProdutoBO implements IProdutoBO {
 	private IProdutoDAO produtoDAO;
 
 	public ProdutoBO() {
-		produtoDAO = new ProdutoDAO();
+		produtoDAO = new ProdutoDAO(); 
 	}
 
 	@Override

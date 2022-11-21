@@ -6,7 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -25,7 +27,6 @@ import br.com.empresa.service.ServicoBeanLocal;
 import br.com.empresa.view.util.MascaraJFormattedTextField;
 import br.com.empresa.vo.ProdutoVO;
 import br.com.empresa.vo.enums.StatusEnum;
-import br.com.empresa.vo.enums.TipoPessoaEnum;
 
 public class ProdutoView extends JDialog {
 
@@ -43,18 +44,19 @@ public class ProdutoView extends JDialog {
 	private IServicoBeanLocal servicoBeanLocal;
 	private ConsultaProdutoView consultaProdutoView;
 	private JTextField tFtDataFabricacao;
-	private JTextField textField;
+	private JTextField textFieldValidade;
+
 	/**
-	 * Create the dialog.
+	 * Create the dialog. 
 	 */
 	public ProdutoView() {
 		inicializarComponente();
 	}
 
-	public ProdutoView(ConsultaProdutoView consultaProdutoView) {
+	public ProdutoView(ConsultaProdutoView consultaProdutoView) { 
 		super(consultaProdutoView, true);
 		this.consultaProdutoView = consultaProdutoView;
-		inicializarComponente();
+		inicializarComponente(); 
 
 		servicoBeanLocal = new ServicoBeanLocal();
 	}
@@ -171,14 +173,14 @@ public class ProdutoView extends JDialog {
 		getContentPane().add(tFtDataFabricacao);
 		tFtDataFabricacao.setColumns(10);
 
-		textField = new JTextField();
-		textField.setBounds(128, 242, 132, 20);
-		getContentPane().add(textField);
-		textField.setColumns(10);
-		
+		textFieldValidade = new JTextField();
+		textFieldValidade.setBounds(128, 242, 132, 20);
+		getContentPane().add(textFieldValidade);
+		textFieldValidade.setColumns(10);
+
 		textFieldLucro = new JFormattedTextField();
 		textFieldLucro.setEditable(false);
-		textFieldLucro.setBounds(126, 182, 116, 20);
+		textFieldLucro.setBounds(128, 182, 116, 20);
 		getContentPane().add(textFieldLucro);
 		textFieldLucro.setColumns(10);
 
@@ -186,7 +188,30 @@ public class ProdutoView extends JDialog {
 
 	private void salvar() {
 
+		// Utilizei o metodo do rafa
 		try {
+
+			String dataValidade = textFieldValidade.getText().trim();
+			if (dataValidade != null) {
+				SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+				try {
+					Date date2 = formatador.parse(dataValidade);
+					produtoVO.setDtValidade(date2);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+
+			String dataFabricacao = tFtDataFabricacao.getText().trim();
+			if (dataFabricacao != null) {
+				SimpleDateFormat formatadorFab = new SimpleDateFormat("dd/MM/yyyy");
+				try {
+					Date date3 = formatadorFab.parse(dataFabricacao);
+					produtoVO.setDtFabricacao(date3);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
 
 			String codigo = tfcodigo.getText();
 			if (codigo.trim().length() > 0) {
@@ -232,7 +257,7 @@ public class ProdutoView extends JDialog {
 			servicoBeanLocal.salvarProduto(produtoVO);
 
 			tfcodigo.setText(produtoVO.getId().toString());
-			
+
 			textFieldLucro.setText(produtoVO.lucro().toString());
 
 			consultaProdutoView.pesquisar();

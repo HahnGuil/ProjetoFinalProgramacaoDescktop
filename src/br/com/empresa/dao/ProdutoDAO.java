@@ -49,7 +49,7 @@ public class ProdutoDAO implements IProdutoDAO {
 		EntityManager em = HibernateUtil.getEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaQuery<ProdutoVO> criteria = cb.createQuery(ProdutoVO.class);
+		CriteriaQuery<ProdutoVO> criteria = cb.createQuery(ProdutoVO.class); 
 
 		// From
 		Root<ProdutoVO> produtoFrom = criteria.from(ProdutoVO.class);

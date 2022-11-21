@@ -6,6 +6,13 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -13,6 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -56,9 +68,9 @@ public class ConsultaProdutoView extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ConsultaProdutoView() {
+	public ConsultaProdutoView() { 
 
-		setTitle("Manutenção de Produto");
+		setTitle("Manutenção de Produto"); 
 
 		servicoBeanLocal = new ServicoBeanLocal();
 
@@ -204,17 +216,79 @@ public class ConsultaProdutoView extends JDialog {
 		getContentPane().add(btnImportarCSV);
 
 		JButton btnExportarCSV = new JButton("Exportar CSV");
-		btnExportarCSV.addActionListener(new ActionListener() {
+		btnExportarCSV.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
 
-				// Vai ser preciso pegar o resultado do SQL que aparece na listagem de produtos
-				// na tabela e a partir dele, gerar um arquivo.
+				ClienteVO clienteVO = new ClienteVO();
+				clienteVO.setId(BigInteger.ONE);
 
-				File arquivoDestino = null;
-				JFileChooser jFileChooser = new JFileChooser();
-				JFileChooser.setDefaultLocale(getLocale());
+				EntityManager em = HibernateUtil.getEntityManager();
 
+				CriteriaBuilder cb = em.getCriteriaBuilder();
+
+				CriteriaQuery<ProdutoVO> criteria = cb.createQuery(ProdutoVO.class);
+
+				// From
+				Root<ProdutoVO> produtoFrom = criteria.from(ProdutoVO.class);
+
+				// Where
+				Predicate produtoWhere = cb.equal(produtoFrom.get("client"), clienteVO);
+
+				criteria.where(produtoWhere);
+				
+
+				TypedQuery<ProdutoVO> query = em.createQuery(criteria);
+
+				List<ProdutoVO> retornoProdutos = query.getResultList();
+
+				em.close();
+				
+				//// iniciar a gravação do arquivo ///
+
+				File destinoArquivo = null;
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				int opcao = fileChooser.showDialog(fileChooser, null);
+
+				destinoArquivo = fileChooser.getSelectedFile();
+
+				String path = destinoArquivo.getAbsolutePath() + "\\produto.csv";
+
+				File newFile = new File(path);
+
+				try {
+
+					OutputStream outputStream = new FileOutputStream(newFile, true);
+					OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "ISO-8859-1"); // UTF-8
+					PrintWriter printWriter = new PrintWriter(outputStream, true);
+
+					printWriter.println("id,descri,codbar,status,qtdest,valcom,valven,client");
+
+					for (ProdutoVO produtoVO : retornoProdutos) {
+						printWriter.println(produtoVO.getId() + "," + produtoVO.getDescri() + ","
+								+ produtoVO.getCodbar() + "," + produtoVO.getStatus() + "," + produtoVO.getQtdest()
+								+ "," + produtoVO.getValcom() + "," + produtoVO.getValven() + ","
+								+ produtoVO.getClient().getId());
+					}
+
+					printWriter.close();
+					outputStreamWriter.close();
+					outputStream.close();
+
+					System.out.println("Escrita completa");
+
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
+
 		});
 		btnExportarCSV.setBounds(162, 370, 133, 23);
 		getContentPane().add(btnExportarCSV);
@@ -227,6 +301,7 @@ public class ConsultaProdutoView extends JDialog {
 	}
 
 	private void importarCSV() {
+		
 		File arquivoOrigem = null;
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);

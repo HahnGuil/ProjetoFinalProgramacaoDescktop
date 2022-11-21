@@ -30,7 +30,7 @@ public class ServicoBeanLocal implements IServicoBeanLocal {
 	public UsuarioVO validarAcesso(String login, String senha) throws BOValidationException, BOException {
 
 		IUsuarioBO usuarioBO = new UsuarioBO();
-		return usuarioBO.validarAcesso(login, senha);
+		return usuarioBO.validarAcesso(login, senha); 
 
 	}
 

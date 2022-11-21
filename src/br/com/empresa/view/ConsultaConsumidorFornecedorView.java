@@ -56,7 +56,7 @@ public class ConsultaConsumidorFornecedorView extends JDialog {
 
 		servicoBeanLocal = new ServicoBeanLocal();
 
-		setTitle("Manutenção de Consumidor/Fornecedor");
+		setTitle("Manutenção de Consumidor/Fornecedor"); 
 		setBounds(100, 100, 758, 450);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);

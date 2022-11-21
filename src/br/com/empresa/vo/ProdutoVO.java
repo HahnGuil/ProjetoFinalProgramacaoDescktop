@@ -107,12 +107,6 @@ public class ProdutoVO implements Serializable {
 		this.dtValidade = dtValidade;
 	}
 
-	public String getDtFormatadaValidade() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		String dataValidade = sdf.format(dtValidade);
-		return dataValidade;
-	}
-
 	public Date getDtFabricacao() {
 		return dtFabricacao;
 	}
@@ -120,11 +114,13 @@ public class ProdutoVO implements Serializable {
 	public void setDtFabricacao(Date dtFabricacao) {
 		this.dtFabricacao = dtFabricacao;
 	}
+	
+	public void setDatfab(Date datfab) {
+		this.dtFabricacao = datfab;
+	}
 
-	public String getDtFormatadaFabricacao() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		String dataFabricao = sdf.format(dtFabricacao);
-		return dataFabricao;
+	public Date getDatval() {  
+		return dtValidade;
 	}
 
 	// Metodo para Calcular o Lucro.

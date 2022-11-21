@@ -11,16 +11,17 @@
 				value="jdbc:postgresql://localhost:3314/guilherme" />
 			<property name="javax.persistence.jdbc.user" value="postgres" />
 			<property name="javax.persistence.jdbc.password" value="hahn" /> -->
+			
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:postgresql://localhost:5432/vendas" />
+				value="jdbc:postgresql://localhost:3314/guilherme" />
 			<property name="javax.persistence.jdbc.user" value="postgres" />
-			<property name="javax.persistence.jdbc.password" value="davi123" />
+			<property name="javax.persistence.jdbc.password" value="hahn" />
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<!-- <property name="hibernate.listeners.envers.autoRegister" value="true"/> 
+			<property name="hibernate.listeners.envers.autoRegister" value="true"/> 
 				<property name="org.hibernate.envers.audit_table_suffix" value="_audit"/> 
-				<property name="org.hibernate.envers.store_data_at_delete" value="true"/> -->
+				<property name="org.hibernate.envers.store_data_at_delete" value="true"/> 
 
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.show_sql" value="true" />

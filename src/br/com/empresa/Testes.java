@@ -47,7 +47,7 @@ public class Testes {
 		} else {
 			JOptionPane.showMessageDialog(null, "Não pode seguir");
 		}
-	}
+	} 
 
 	private void lerArquivoSelecionado(File arquivoOrigem) {
 

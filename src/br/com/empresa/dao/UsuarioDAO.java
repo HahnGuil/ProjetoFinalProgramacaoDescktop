@@ -26,7 +26,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 		EntityManager em = HibernateUtil.getEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
-		CriteriaQuery<UsuarioVO> criteria = cb.createQuery(UsuarioVO.class);
+		CriteriaQuery<UsuarioVO> criteria = cb.createQuery(UsuarioVO.class); 
 
 		// From
 		Root<UsuarioVO> usuarioFrom = criteria.from(UsuarioVO.class);

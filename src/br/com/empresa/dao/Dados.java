@@ -24,7 +24,7 @@ public class Dados {
 	static {
 
 		// Inclusão de usuários
-		usuarioVOs = new ArrayList<UsuarioVO>();
+		usuarioVOs = new ArrayList<UsuarioVO>(); 
 		UsuarioVO u1 = new UsuarioVO();
 		u1.setId(new BigInteger("1"));
 		u1.setLogusu("postgres");
