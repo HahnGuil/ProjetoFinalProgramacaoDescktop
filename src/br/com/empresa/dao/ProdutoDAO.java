@@ -3,8 +3,13 @@ package br.com.empresa.dao;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -137,7 +142,7 @@ public class ProdutoDAO implements IProdutoDAO {
 	}
 
 	@Override
-	public void salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
+	public ProdutoVO salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
 
 		// List<ProdutoVO> produtoVOs = null; // Dados.getProdutoVOs();
 		EntityManager em = HibernateUtil.getEntityManager();
@@ -148,6 +153,8 @@ public class ProdutoDAO implements IProdutoDAO {
 				em.getTransaction().begin();
 				em.persist(produtoVO);
 				em.getTransaction().commit();
+
+				return produtoVO;
 			} else {
 
 				em.getTransaction().begin();
@@ -162,6 +169,8 @@ public class ProdutoDAO implements IProdutoDAO {
 
 				em.merge(produtoBanco);
 				em.getTransaction().commit();
+
+				return produtoBanco;
 			}
 		} catch (Exception e) {
 			throw new BOException(e);
@@ -239,6 +248,56 @@ public class ProdutoDAO implements IProdutoDAO {
 			throw new BOException(e);
 		}
 
+	}
+
+	@Override
+	public void exportarProdutosCSV(File filePath, ClienteVO cliente) throws BOException {
+		EntityManager em = HibernateUtil.getEntityManager();
+
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<ProdutoVO> criteria = cb.createQuery(ProdutoVO.class);
+
+		// From
+		Root<ProdutoVO> produtoFrom = criteria.from(ProdutoVO.class);
+
+		// Where
+		Predicate produtoWhere = cb.equal(produtoFrom.get("client"), cliente);
+
+		criteria.where(produtoWhere);
+		
+
+		TypedQuery<ProdutoVO> query = em.createQuery(criteria);
+
+		List<ProdutoVO> retornoProdutos = query.getResultList();
+
+		em.close();
+		
+		try {
+			OutputStream outputStream = new FileOutputStream(filePath, true);
+		
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "ISO-8859-1"); // UTF-8
+			PrintWriter printWriter = new PrintWriter(outputStream, true);
+
+			printWriter.println("id,descri,codbar,status,qtdest,valcom,valven,client");
+
+			for (ProdutoVO produtoVO : retornoProdutos) {
+				printWriter.println(produtoVO.getId() + "," + produtoVO.getDescri() + ","
+						+ produtoVO.getCodbar() + "," + produtoVO.getStatus() + "," + produtoVO.getQtdest()
+						+ "," + produtoVO.getValcom() + "," + produtoVO.getValven() + ","
+						+ produtoVO.getClient().getId());
+			}
+
+			printWriter.close();
+			outputStreamWriter.close();
+			outputStream.close();
+
+		} catch (FileNotFoundException e) {
+			throw new BOException(e);
+		} catch (IOException e) {
+			throw new BOException(e);
+		}
+		
 	}
 
 }

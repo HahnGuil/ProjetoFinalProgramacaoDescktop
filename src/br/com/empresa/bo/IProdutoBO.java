@@ -1,6 +1,9 @@
 package br.com.empresa.bo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +85,7 @@ public interface IProdutoBO {
 	 * @throws BOValidationException
 	 * @throws BOException
 	 */
-	public abstract void salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException;
+	public abstract ProdutoVO salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException;
 
 	/**
 	 * Exclui um determinado produto da base de dados.
@@ -102,5 +105,18 @@ public interface IProdutoBO {
 	 * @throws BOException
 	 */
 	public abstract void importarProdutosViaCSV(File file, ClienteVO clienteVO) throws BOException;
+
+	/**
+	 * Exporta os produtos do banco via arquivo CSV.
+	 * 
+	 * @param produtoVO
+	 * @param clienteVO
+	 * @throws BOValidationException
+	 * @throws BOException
+	 * @throws IOException
+	 * @throws UnsupportedEncodingException
+	 * @throws FileNotFoundException
+	 */
+    public abstract void exportarProdutosCSV(File filePath, ClienteVO cliente) throws BOException;
 
 }

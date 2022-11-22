@@ -218,75 +218,7 @@ public class ConsultaProdutoView extends JDialog {
 		JButton btnExportarCSV = new JButton("Exportar CSV");
 		btnExportarCSV.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
-
-				ClienteVO clienteVO = new ClienteVO();
-				clienteVO.setId(BigInteger.ONE);
-
-				EntityManager em = HibernateUtil.getEntityManager();
-
-				CriteriaBuilder cb = em.getCriteriaBuilder();
-
-				CriteriaQuery<ProdutoVO> criteria = cb.createQuery(ProdutoVO.class);
-
-				// From
-				Root<ProdutoVO> produtoFrom = criteria.from(ProdutoVO.class);
-
-				// Where
-				Predicate produtoWhere = cb.equal(produtoFrom.get("client"), clienteVO);
-
-				criteria.where(produtoWhere);
-				
-
-				TypedQuery<ProdutoVO> query = em.createQuery(criteria);
-
-				List<ProdutoVO> retornoProdutos = query.getResultList();
-
-				em.close();
-				
-				//// iniciar a gravação do arquivo ///
-
-				File destinoArquivo = null;
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				int opcao = fileChooser.showDialog(fileChooser, null);
-
-				destinoArquivo = fileChooser.getSelectedFile();
-
-				String path = destinoArquivo.getAbsolutePath() + "\\produto.csv";
-
-				File newFile = new File(path);
-
-				try {
-
-					OutputStream outputStream = new FileOutputStream(newFile, true);
-					OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "ISO-8859-1"); // UTF-8
-					PrintWriter printWriter = new PrintWriter(outputStream, true);
-
-					printWriter.println("id,descri,codbar,status,qtdest,valcom,valven,client");
-
-					for (ProdutoVO produtoVO : retornoProdutos) {
-						printWriter.println(produtoVO.getId() + "," + produtoVO.getDescri() + ","
-								+ produtoVO.getCodbar() + "," + produtoVO.getStatus() + "," + produtoVO.getQtdest()
-								+ "," + produtoVO.getValcom() + "," + produtoVO.getValven() + ","
-								+ produtoVO.getClient().getId());
-					}
-
-					printWriter.close();
-					outputStreamWriter.close();
-					outputStream.close();
-
-					System.out.println("Escrita completa");
-
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (UnsupportedEncodingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				exportarCSV();
 			}
 
 		});
@@ -298,6 +230,40 @@ public class ConsultaProdutoView extends JDialog {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
+	}
+
+	private void exportarCSV() {
+		ClienteVO clienteVO = new ClienteVO();
+		clienteVO.setId(BigInteger.ONE);
+
+		//// iniciar a gravação do arquivo ///
+
+		File destinoArquivo = null;
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int opcao = fileChooser.showDialog(fileChooser, null);
+
+		destinoArquivo = fileChooser.getSelectedFile();
+
+		String path = destinoArquivo.getAbsolutePath() + "\\produto.csv";
+
+		File newFile = new File(path);
+
+		try {
+
+			servicoBeanLocal.exportarProdutosViaCSV(newFile, Dados.getClienteSelecionado());
+
+			JOptionPane.showMessageDialog(null, "Arquivo exportado com sucesso.", "Sucesso",
+				JOptionPane.INFORMATION_MESSAGE);
+
+
+		} catch (BOValidationException e) {
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar a operação.", "Erro",
+						JOptionPane.ERROR_MESSAGE);
+		} catch (BOException e) {
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar a operação.", "Erro",
+						JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void importarCSV() {
@@ -315,6 +281,9 @@ public class ConsultaProdutoView extends JDialog {
 				servicoBeanLocal.importarProdutosViaCSV(arquivoOrigem, Dados.getClienteSelecionado());
 
 				pesquisar();
+
+				JOptionPane.showMessageDialog(null, "Arquivo CSV importado com sucesso.", "Sucesso",
+						JOptionPane.INFORMATION_MESSAGE);
 			} catch (BOException e) {
 				JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar a operação.", "Erro",
 						JOptionPane.ERROR_MESSAGE);

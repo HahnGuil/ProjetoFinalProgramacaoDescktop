@@ -121,11 +121,11 @@ public class ServicoBeanLocal implements IServicoBeanLocal {
 	}
 
 	@Override
-	public void salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
+	public ProdutoVO salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
 
 		IProdutoBO produtoBO = new ProdutoBO();
 
-		produtoBO.salvarProduto(produtoVO);
+		return produtoBO.salvarProduto(produtoVO);
 
 	}
 
@@ -164,6 +164,14 @@ public class ServicoBeanLocal implements IServicoBeanLocal {
 
 		produtoBO.importarProdutosViaCSV(file, clienteVO);
 
+	}
+
+	@Override
+	public void exportarProdutosViaCSV(File filePath, ClienteVO cliente) throws BOValidationException, BOException {
+		IProdutoBO produtoBO = new ProdutoBO();
+
+		produtoBO.exportarProdutosCSV(filePath, cliente);
+		
 	}
 
 }

@@ -167,7 +167,7 @@ public interface IServicoBeanLocal {
 	 * @throws BOValidationException
 	 * @throws BOException
 	 */
-	public abstract void salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException;
+	public abstract ProdutoVO salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException;
 
 	/**
 	 * Exclui um determinado produto da base de dados.
@@ -187,4 +187,14 @@ public interface IServicoBeanLocal {
 	 * @throws BOException
 	 */
 	public abstract void importarProdutosViaCSV(File file, ClienteVO cliente) throws BOValidationException, BOException;
+
+		/**
+	 * Exporta os produtos do banco de dados via arquivo CSV.
+	 * 
+	 * @param file
+	 * @param cliente
+	 * @throws BOValidationException
+	 * @throws BOException
+	 */
+	public abstract void exportarProdutosViaCSV(File filePath, ClienteVO cliente) throws BOValidationException, BOException;
 }

@@ -187,8 +187,6 @@ public class ProdutoView extends JDialog {
 	}
 
 	private void salvar() {
-
-		// Utilizei o metodo do rafa
 		try {
 
 			String dataValidade = textFieldValidade.getText().trim();
@@ -254,13 +252,18 @@ public class ProdutoView extends JDialog {
 
 			produtoVO.setClient(Dados.getClienteSelecionado());
 
-			servicoBeanLocal.salvarProduto(produtoVO);
+			ProdutoVO produtoSalvo = servicoBeanLocal.salvarProduto(produtoVO);
 
 			tfcodigo.setText(produtoVO.getId().toString());
 
-			textFieldLucro.setText(produtoVO.lucro().toString());
+			textFieldLucro.setText(produtoVO.getLucro().toString());
 
 			consultaProdutoView.pesquisar();
+
+			// if (produtoSalvo.getDiasDiferenca()) {
+			// 	JOptionPane.showMessageDialog(this, "Produto de alta validade.!", "Mensagem de confirmação",
+			// 	JOptionPane.INFORMATION_MESSAGE);
+			// }
 
 			JOptionPane.showMessageDialog(this, "Operação realizada com sucesso!", "Mensagem de confirmação",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -284,6 +287,9 @@ public class ProdutoView extends JDialog {
 		this.ftfVlrCompra.setText(produtoVO.getValcom().toPlainString());
 		this.ftfVlrVenda.setText(produtoVO.getValven().toPlainString());
 		this.ftfQtd.setText(produtoVO.getQtdest().toPlainString());
+		this.tFtDataFabricacao.setText(produtoVO.getDtFabricacaoFormatado());
+		this.textFieldValidade.setText(produtoVO.getDtValidadeFormatado());
+		this.textFieldLucro.setText(produtoVO.getLucro().toPlainString());
 
 	}
 

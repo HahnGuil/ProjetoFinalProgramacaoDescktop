@@ -95,11 +95,19 @@ public class LoginView extends JFrame {
 			UsuarioVO usuario = servicoBeanLocal.validarAcesso(txtLogin.getText(), senha);
 			Dados.setUsuarioSelecionado(usuario);
 
+			System.out.println("---------Usuario que retornou do login e senha--------------");
+			System.out.println(usuario);
+			System.out.println("-----------------------");
+
 			int qtd = servicoBeanLocal.buscarQuantidadeClientesUsuario(usuario);
 
 			if (qtd == 1) {
 
 				List<UsuarioClienteVO> usuarioClienteVOs = servicoBeanLocal.listarClientesUsuario(Dados.getUsuarioSelecionado());
+
+				System.out.println("---------Cliente que retornou do select do user--------------");
+				System.out.println(usuarioClienteVOs);
+				System.out.println("-----------------------");
 
 				Dados.setClienteSelecionado(usuarioClienteVOs.get(0).getClienteVO());
 

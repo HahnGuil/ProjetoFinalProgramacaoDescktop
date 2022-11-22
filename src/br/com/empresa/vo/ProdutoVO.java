@@ -6,6 +6,8 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -111,6 +113,18 @@ public class ProdutoVO implements Serializable {
 		return dtFabricacao;
 	}
 
+	public String getDtFabricacaoFormatado () {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+		return sdf.format(dtFabricacao);
+	}
+
+	public String getDtValidadeFormatado () {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+		return sdf.format(dtValidade);
+	}
+
 	public void setDtFabricacao(Date dtFabricacao) {
 		this.dtFabricacao = dtFabricacao;
 	}
@@ -124,7 +138,7 @@ public class ProdutoVO implements Serializable {
 	}
 
 	// Metodo para Calcular o Lucro.
-	public BigDecimal lucro() {
+	public BigDecimal getLucro() {
 
 		BigDecimal BigCompra = valcom;
 		BigDecimal BigVenda = valven;
@@ -132,6 +146,28 @@ public class ProdutoVO implements Serializable {
 
 		return BigLucro;
 	}
+
+	// Retornar diferença de data do produto
+	// public long getDiasDiferenca ()  {
+	// 	long diferencaEntreDias;
+
+	// 	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+	// 	try {
+	// 		Date dataFabricacao = sdf.parse(getDtFabricacaoFormatado());
+	// 		Date dataValidade = sdf.parse(getDtValidadeFormatado());
+
+	// 		long diffInMillies = Math.abs(dataValidade.getTime() - dataFabricacao.getTime());
+	// 		diferencaEntreDias = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+	// 		return diferencaEntreDias;
+
+	// 	} catch (ParseException e) {
+	// 		// TODO Auto-generated catch block
+	// 		e.printStackTrace();
+	// 	}
+
+	// 	return diferencaEntreDias;
+	// }
 
 	public ProdutoVO() {
 	}

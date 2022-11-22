@@ -1,6 +1,9 @@
 package br.com.empresa.bo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +78,7 @@ public class ProdutoBO implements IProdutoBO {
 	}
 
 	@Override
-	public void salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
+	public ProdutoVO salvarProduto(ProdutoVO produtoVO) throws BOValidationException, BOException {
 
 		if (produtoVO == null) {
 			throw new BOException();
@@ -97,7 +100,7 @@ public class ProdutoBO implements IProdutoBO {
 
 		}
 
-		produtoDAO.salvarProduto(produtoVO);
+		return produtoDAO.salvarProduto(produtoVO);
 	}
 
 	@Override
@@ -120,6 +123,13 @@ public class ProdutoBO implements IProdutoBO {
 
 		produtoDAO.importarProdutosViaCSV(file, clienteVO);
 
+	}
+
+	@Override
+	public void exportarProdutosCSV(File filePath, ClienteVO cliente) throws  BOException {
+		
+		produtoDAO.exportarProdutosCSV(filePath, cliente);
+		
 	}
 
 }
